@@ -1,16 +1,13 @@
 .container {
-  background-color: rgb(255, 153, 0);
   color: #242424;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
-  // align-items: center;
   &__text-center {
     text-align: center;
     width: auto;
     height: min-content;
-    background-color: chartreuse;
   }
 
 }
