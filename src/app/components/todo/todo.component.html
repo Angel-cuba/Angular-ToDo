@@ -1,8 +1,10 @@
+<h1>{{ title }}</h1>
 <div class="todos">
-  <div class="todo">
-    <div class="id">0</div>
-    <div class="content">My todo</div>
-    <button class="todos__remove">Remove</button>
-    <button class="todos_edit"></button>
-  </div>
+  @for (todo of todos; track $index) {
+    <div [ngClass]="{'done': todo.completed, 'not': !todo.completed}">
+      <input type="checkbox" [checked]="todo.completed" (change)="todo.completed = !todo.completed">
+      <span [class.done]="todo.completed">{{ todo.title }}</span>
+      <button (click)="remove(todo.id)">Remove</button>
+    </div>
+  }
 </div>
