@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-small-title',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './small-title.component.html',
-  styleUrl: './small-title.component.scss'
+  styleUrl: './small-title.component.scss',
 })
 export class SmallTitleComponent {
-
+  @Input() title!: string;
 }
