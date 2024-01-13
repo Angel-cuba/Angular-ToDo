@@ -1,77 +1,49 @@
 import { Routes } from '@angular/router';
+import { HeroComponent } from './components/hero/hero.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { FormComponent } from './components/form/form.component';
+import { PostComponent } from './components/posts/post/post.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { TodoComponent } from './components/todo/todo.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
   {
     path: 'hero',
-    loadComponent: () => {
-      return import('./components/hero/hero.component').then(
-        (m) => m.HeroComponent
-      );
-    },
+    component: HeroComponent,
     children: [
       {
         path: 'posts',
-        loadComponent: () => {
-          return import('./components/posts/posts.component').then(
-            (m) => m.PostsComponent
-          );
-        },
+        component: PostsComponent,
       },
       {
         path: 'create',
-        loadComponent: () => {
-          return import('./components/form/form.component').then(
-            (m) => m.FormComponent
-          );
-        },
+        component: FormComponent
       },
       {
         path: 'edit/:id',
-        loadComponent: () => {
-          return import('./components/form/form.component').then(
-            (m) => m.FormComponent
-          );
-        },
+       component: FormComponent
       },
       {
         path: 'view/:id',
-        loadComponent: () => {
-          return import('./components/posts/post/post.component').then(
-            (m) => m.PostComponent
-          );
-        },
+        component: PostComponent
       },
       {
         path: 'about',
-        loadComponent: () => {
-          return import('./components/about/about.component').then(
-            (m) => m.AboutComponent
-          );
-        },
+        component: AboutComponent
       },
       {
         path: 'contact',
-        loadComponent: () => {
-          return import('./components/contact/contact.component').then(
-            (m) => m.ContactComponent
-          );
-        },
+        component: ContactComponent
       },
       {
         path: 'activity',
-        loadComponent() {
-          return import('./components/todo/todo.component').then(
-            (m) => m.TodoComponent
-          );
-        },
+        component: TodoComponent
       },
       {
         path: 'profile',
-        loadComponent: () => {
-          return import('./components/profile/profile.component').then(
-            (m) => m.ProfileComponent
-          );
-        },
+        component: ProfileComponent
       },
       {
         path: '',
