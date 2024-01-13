@@ -1,31 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { delay } from 'rxjs';
+import { Post, PostResponse } from '../../interfaces/Post';
 
+type PostState = {
+  allPosts: Post[];
+};
 @Injectable({
   providedIn: 'root',
 })
 export class PostServiceService {
   url: string = environment.localUrl;
 
-  #postState = signal<any>({ posts: [] });
+  #postState = signal<PostState>({ allPosts: [] });
+
+  public posts = computed(() => this.#postState().allPosts);
+
   constructor(private http: HttpClient) {
     this.loadPosts();
   }
 
   loadPosts() {
     this.http
-      .get(this.url + 'posts/all')
-      .pipe(delay(1000))
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.#postState.set(data);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      .get<PostResponse>(this.url + 'posts/all')
+      .subscribe((response) => {
+        this.#postState.set({
+          allPosts: response.data,
+        });
+      });
   }
 }
