@@ -3,11 +3,12 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { routes } from '../../app.routes';
 import { SmallTitleComponent } from '../content/small-title/small-title.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, SmallTitleComponent],
+  imports: [CommonModule, RouterModule, SmallTitleComponent, MatButtonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })

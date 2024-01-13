@@ -32,23 +32,10 @@
       }
     }
     &--btn {
-      border: none;
-      background: none;
+      color: #ff0000;
       font-weight: 700;
-      margin: 0;
-      padding: 3px 5px;
-      background-color: #ff0000;
-      border-radius: 3px;
-      box-shadow: 0 0 5px 0 rrgba(255, 0, 0, 0.685);
-      transition: all 0.1s ease-in-out;
-      color: #f5f5f5;
-      text-shadow: 0 0 2px rgb(255, 255, 255);
       &:hover {
         cursor: pointer;
-        background-color: #242424;
-        color: #ff0000;
-        text-shadow: none;
-        transform: scale(1.1);
       }
     }
   }
