@@ -6,6 +6,9 @@ import { Post, PostResponse } from '../../interfaces/Post';
 type PostState = {
   allPosts: Post[];
 };
+type PState = {
+  post: Post[] | any;
+};
 @Injectable({
   providedIn: 'root',
 })
@@ -13,8 +16,11 @@ export class PostServiceService {
   url: string = environment.localUrl;
 
   #postState = signal<PostState>({ allPosts: [] });
+  #postState$ = signal<PState>({ post: [] });
+
 
   public posts = computed(() => this.#postState().allPosts);
+  public post = computed(() => this.#postState$().post);
 
   constructor(private http: HttpClient) {
     this.loadPosts();
@@ -29,4 +35,15 @@ export class PostServiceService {
         });
       });
   }
+
+  getPostById(id: string) {
+    this.http
+      .get<PostResponse>(this.url + 'posts/' + id)
+      .subscribe((response) => {
+        this.#postState$.set({
+          post: response.data,
+        });
+      });
+  }
+
 }

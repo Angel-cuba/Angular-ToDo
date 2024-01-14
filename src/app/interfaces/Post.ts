@@ -6,7 +6,7 @@ export interface Post {
     image: string;
     likes: string[];
     tags: string[];
-    reviewsIds: ReviewIds[];
+    reviewIds: ReviewIds[];
     createdAt: string;
     updatedAt?: string;
 }

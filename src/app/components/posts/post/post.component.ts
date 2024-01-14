@@ -5,8 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { SmallTitleComponent } from '../../content/small-title/small-title.component';
+import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-post',
   standalone: true,
@@ -18,15 +19,16 @@ import { SmallTitleComponent } from '../../content/small-title/small-title.compo
     FontAwesomeModule,
     SmallTitleComponent,
     MatButtonModule,
+    RouterModule,
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
 })
 export class PostComponent {
   @Input() post: Post | undefined;
-  constructor() {}
+  constructor(private router: Router) {}
 
-  likePost(postId: string | undefined) {
-    console.log('🚀 ~ PostComponent ~ likePost ~ postId', postId);
+  likePost(post: any | undefined) {
+    console.log('🚀 ~ PostComponent ~ likePost ~ postId', post);
   }
 }

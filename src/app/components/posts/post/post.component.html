@@ -10,16 +10,16 @@
   <app-small-title title="{{ post?.body }}" />
   <mat-divider></mat-divider>
   <div class="post__content">
-    <mat-icon class="post__content--icon" matBadge="{{ post?.likes?.length }}" matBadgeColor="warn"
-      aria-hidden="false">favorite</mat-icon>
-    <span class="post__content--icon">
-      <app-small-title title="Comments" />
-      <mat-icon matBadge="{{ post?.reviewsIds?.length }}" matBadgeColor="primary"
-        aria-hidden="false">comment</mat-icon>
-    </span>
+    <div class="post__content__icons">
+      <mat-icon class="post__content__icons--icon" matBadge="{{ post?.likes?.length }}"
+        matBadgeColor="warn" aria-hidden="false">favorite</mat-icon>
+      <mat-icon class="post__content__icons--icon" matBadge="{{ post?.reviewIds?.length }}"
+        matBadgeColor="accent" aria-hidden="false">comment</mat-icon>
+    </div>
     <div class="post__content--tags">
       <p *ngFor="let tag of post?.tags" class="post__content--tags--tag"># {{ tag
         }}</p>
     </div>
-    <button class="post__content--btn" (click)="likePost(post?.id)">Like</button>
+    <a [routerLink]="['post', post?.id]" routerLinkActive="router-link-active">Details</a>
+    <button class="post__content--btn" (click)="likePost(post)">Like</button>
   </div>

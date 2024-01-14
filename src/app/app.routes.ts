@@ -7,6 +7,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { TodoComponent } from './components/todo/todo.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { DetailsComponent } from './components/posts/details/details.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
       {
         path: 'posts',
         component: PostsComponent,
+      },
+      {
+        path: 'posts/post/:id',
+        component: DetailsComponent
       },
       {
         path: 'create',
