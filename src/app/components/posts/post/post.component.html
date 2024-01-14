@@ -1,1 +1,25 @@
-<p>post works!</p>
+<div class="post">
+  <div class="post__img-title">
+    @if (post?.image) {
+    <img src="{{ post?.image }}" alt="{{ post?.title }}" class="post__img-title--image" />
+    } @else {
+    <span>There is not pic to show</span>
+    }
+    <h2 class="post__img-title--title">{{ post?.title }}</h2>
+  </div>
+  <app-small-title title="{{ post?.body }}" />
+  <mat-divider></mat-divider>
+  <div class="post__content">
+    <mat-icon class="post__content--icon" matBadge="{{ post?.likes?.length }}" matBadgeColor="warn"
+      aria-hidden="false">favorite</mat-icon>
+    <span class="post__content--icon">
+      <app-small-title title="Comments" />
+      <mat-icon matBadge="{{ post?.reviewsIds?.length }}" matBadgeColor="primary"
+        aria-hidden="false">comment</mat-icon>
+    </span>
+    <div class="post__content--tags">
+      <p *ngFor="let tag of post?.tags" class="post__content--tags--tag"># {{ tag
+        }}</p>
+    </div>
+    <button class="post__content--btn" (click)="likePost(post?.id)">Like</button>
+  </div>

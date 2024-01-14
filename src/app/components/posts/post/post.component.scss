@@ -1,0 +1,89 @@
+.post {
+  position: relative;
+  width: 300px;
+  min-width: 250px;
+  margin: 10px 5px;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  &__img-title {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+    &--title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+      text-align: center;
+      padding-right: 10px;
+    }
+    &--image {
+      max-width: 100%;
+      height: 120px;
+      background-size: contain;
+      background-position: center;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      transform: scale(0.9);
+      margin-left: 2px;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.2, 1.1);
+        margin-left: 6px;
+      }
+    }
+  }
+  &__content {
+    position: relative;
+    padding: 15px 10px 5px 10px;
+    &--icon {
+      width: 100%;
+      height: 30px;
+      margin-right: 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    &--tags {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+      &--tag {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #000000;
+        background-color: #ececec;
+        box-shadow: inset -0.5px 1px 2px 0 rgba(255, 0, 0, 0.5);
+        padding: 2px 4px;
+        border-radius: 5px;
+        margin-left: 5px;
+      }
+    }
+    &--btn {
+      outline-offset: unset;
+      outline: none;
+      border: none;
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      width: 30px;
+      height: 30px;
+      border-radius: 5%;
+      background-color: #ececec;
+      box-shadow: inset -0.5px 1px 2px 0 rgba(255, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        cursor: pointer;
+        background-color: #ffffff;
+        box-shadow: inset -0.5px 1px 2px 0 rgba(255, 0, 0, 0.5);
+      }
+    }
+  }
+}
