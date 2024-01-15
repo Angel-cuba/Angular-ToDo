@@ -10,4 +10,19 @@
       <span class="navbar__items--btn">Log Out</span>
     </button>
   </div>
+  <div class="navbar__mobile-menu" (click)="toggleMenu()">
+    <mat-icon aria-modal="true" mat-raised-button color="warn">menu</mat-icon>
+  </div>
+  @if (openMenu) {
+  <div class="navbar__mobile-menu--items">
+    @for (item of navItems; track item.path) {
+    <a class="navbar__mobile-menu--items--item" [routerLink]="[item.path]" (click)="closeMenu()">
+      {{ (item.path)?.slice(0, 1)?.toUpperCase() + (item.path)?.slice(1) }}
+    </a>
+    }
+    <button mat-raised-button color="accent">
+      <span class="navbar__mobile-menu--items--btn">Log Out</span>
+    </button>
+  </div>
+  }
 </div>
