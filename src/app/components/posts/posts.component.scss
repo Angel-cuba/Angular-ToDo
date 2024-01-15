@@ -1,9 +1,13 @@
 .container {
   margin-top: 20px;
   padding: 1rem 0.5rem;
-  &__posts {
+  &__inside {
+    width: 90%;
+    margin: 0 auto;
+      &__posts {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+  }
   }
 }

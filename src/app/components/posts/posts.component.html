@@ -1,16 +1,18 @@
 <div class="container">
   <app-small-title title="Posts" />
   @defer (on timer(2000)) {
-      <div class="container__posts">
-    @for (post of service.posts(); track post.id) {
-    <app-post [post]="post" />
-    }
-    <div class=""></div>
+  <div class="container__inside">
+    <div class="container__inside__posts">
+      @for (post of service.posts(); track post.id) {
+      <app-post [post]="post" />
+      }
+      <div class=""></div>
+    </div>
   </div>
- } @placeholder {
-   <div class="loading">
+  } @placeholder {
+  <div class="loading">
     <app-big-title title="Loading posts" />
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-   </div>
+  </div>
   }
 </div>
