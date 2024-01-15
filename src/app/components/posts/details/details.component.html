@@ -1,0 +1,18 @@
+<div class="details">
+  <div class="details__post">
+    <app-post [post]="post"></app-post>
+  </div>
+  @if (reviews?.length) {
+      <div class="details__reviews">
+    @defer (on timer(2000)) {
+    <app-reviews [reviews]="reviews"></app-reviews>
+    } @placeholder {
+      <p>Oh! Wait a second! It is loading...</p>
+    }
+  </div>
+  } @else {
+    <p title="There are not reviews yet">Nothing to show</p>
+  }
+  
+  <span class="details__back" (click)="goBack()">Go back</span>
+</div>
