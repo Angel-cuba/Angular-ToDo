@@ -25,10 +25,14 @@
         }}</p>
     </div>
     <div class="post__content__buttons">
-      <button class="post__content__buttons--btn" (click)="likePost(post)">Like</button>
+      <button class="post__content__buttons--btn" (click)="likePost(post?.id)">Like</button>
       @if (!id) {
       <button class="post__content__buttons--btn" [routerLink]="['post', post?.id]"
         routerLinkActive="router-link-active">Details</button>
       }
+      <div class="post__content__buttons--edit-delete">
+        <button class="post__content__buttons--btn" (click)="editPost(post?.id)">Edit</button>
+        <button class="post__content__buttons--btn" (click)="deletePost(post?.id)">Delete</button>
+      </div>
     </div>
   </div>

@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatButtonModule} from '@angular/material/button';
 import { SmallTitleComponent } from '../../content/small-title/small-title.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-post',
   standalone: true,
@@ -19,7 +20,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     FontAwesomeModule,
     SmallTitleComponent,
     MatButtonModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
@@ -35,8 +36,16 @@ export class PostComponent {
     });
   }
 
-  likePost(post: any | undefined) {
-    console.log('🚀 ~ PostComponent ~ likePost ~ postId', this.post);
+  likePost(id: string | undefined) {
+    console.log('🚀 ~ PostComponent ~ likePost ~ postId', id);
 
+  }
+
+  editPost(id: string | undefined) {
+    this.router.navigate(['hero/home/edit/' + id]);
+  }
+
+  deletePost(id: string | undefined) {
+    console.log('🚀 ~ PostComponent ~ deletePost ~ postId', id);
   }
 }
