@@ -28,7 +28,8 @@ export class NavbarComponent {
     .map((route) => route.children ?? [])
     .flat()
     .filter((route) => route.path !== '')
-    .filter((route) => !route.path?.includes(':'));
+    .filter((route) => !route.path?.includes(':'))
+    .filter((route) => !route.path?.includes('create'));
 
   public toggleMenu(): void {
     this.openMenu = !this.openMenu;
