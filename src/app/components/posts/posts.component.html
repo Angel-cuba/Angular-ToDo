@@ -1,5 +1,7 @@
 <div class="container">
-  <app-small-title title="Posts" />
+  <a routerLink="create">
+    <app-small-title title="Create new post" />
+  </a>
   @defer (on timer(2000)) {
   <div class="container__inside">
     <div class="container__inside__posts">
