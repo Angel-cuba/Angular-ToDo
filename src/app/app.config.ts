@@ -7,11 +7,15 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withViewTransitions({
+    provideRouter(
+      routes,
+      withViewTransitions({
         skipInitialTransition: true,
-        onViewTransitionCreated: (transition) => console.log('transition', transition),
-    })),
+        onViewTransitionCreated: (transition) =>
+          console.log('transition', transition),
+      })
+    ),
     importProvidersFrom(HttpClientModule),
-    provideAnimations()
-],
+    provideAnimations(),
+  ],
 };
