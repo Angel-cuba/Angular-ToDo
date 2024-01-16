@@ -34,11 +34,13 @@ export class DetailsComponent implements OnInit {
         this.processPost();
 
         // Hacer el segundo fetch para obtener las reviews basadas en el ID del post
-        this.postService.getReviewsByPostId(this.id).subscribe((reviews) => {
-          this.reviews = reviews.data;
-          // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
-          this.processReviews(reviews);
-        });
+        if (this.post?.reviewIds?.length > 0) {
+          this.postService.getReviewsByPostId(this.id).subscribe((reviews) => {
+            this.reviews = reviews.data;
+            // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
+            this.processReviews(reviews);
+          });
+        }
       });
     });
   }
@@ -57,6 +59,6 @@ export class DetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/hero/posts']);
+    this.router.navigate(['/hero/home']);
   }
 }
