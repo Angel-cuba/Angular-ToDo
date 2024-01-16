@@ -1,1 +1,64 @@
-<p>form works!</p>
+<div class="container">
+  <div class="container__form">
+    <section>
+      <fieldset>
+        @if (!isEditing) {
+        <legend>Add</legend>
+        } @else {
+        <legend>Edit</legend>
+        }
+        <form action="" method="post" (ngSubmit)="savePost()" [formGroup]="form">
+          <div class="container__form__input">
+            <label class="container__form__input--label" for="name">Title: </label>
+            <input type="text" id="title" name="title" formControlName="title"
+              [placeholder]="[ isEditing ? 'Editing' : 'Give a title']">
+            <span class="container__form__input--error"
+              *ngIf="this.form.controls['title'].getError('required') && form.touched">Field
+              required!</span>
+            <span class="container__form__input--error"
+              *ngIf="form.controls['title'].getError('minlength')">Minimum of 3</span>
+          </div>
+          <div class="container__form__input">
+            <label class="container__form__input--label" for="body">Body: </label>
+            <textarea name="body" id="body" cols="30" rows="10" formControlName="body"
+              [placeholder]="[ isEditing ? 'Editing' : 'Give a body']"></textarea>
+            <span class="container__form__input--error"
+              *ngIf="this.form.controls['body'].getError('required') && form.touched">Field
+              required!</span>
+            <span class="container__form__input--error"
+              *ngIf="form.controls['body'].getError('minlength')">Minimum of 3</span>
+          </div>
+          <div class="container__form__input">
+            <label class="container__form__input--label" for="image">Image: </label>
+            <input type="text" id="image" name="image" formControlName="image"
+              [placeholder]="[ isEditing ? 'Editing' : 'Give a image']">
+            <span class="container__form__input--error"
+              *ngIf="this.form.controls['image'].getError('required') && form.touched">Field
+              required!</span>
+            <span class="container__form__input--error"
+              *ngIf="form.controls['image'].getError('minlength')">Minimum of 3</span>
+          </div>
+          <div class="container__form__input">
+            <label class="container__form__input--label" for="tags">Tags: </label>
+            <input type="text" id="tags" name="tags" formControlName="tags"
+              [placeholder]="[ isEditing ? 'Editing' : 'Give a tags']">
+            <span class="container__form__input--error"
+              *ngIf="this.form.controls['tags'].getError('required') && form.touched">Field
+              required!</span>
+            <span class="container__form__input--error"
+              *ngIf="form.controls['tags'].getError('minlength')">Minimum of 3</span>
+          </div>
+          @if (!isEditing) {
+          <button class="container__form__btn" type="submit" [disabled]="form.invalid">Add</button>
+          } @else {
+          <button class="container__form__btn" type="submit" [disabled]="form.invalid">Edit</button>
+          }
+        </form>
+      </fieldset>
+    </section>
+  </div>
+  <div class="container__post-details">
+    <p>Tu post sale aqui
+    </p>
+  </div>
+</div>
