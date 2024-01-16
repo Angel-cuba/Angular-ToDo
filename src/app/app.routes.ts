@@ -15,19 +15,19 @@ export const routes: Routes = [
     component: HeroComponent,
     children: [
       {
-        path: 'posts',
+        path: 'home',
         component: PostsComponent,
       },
       {
-        path: 'posts/post/:id',
+        path: 'home/post/:id',
         component: DetailsComponent
       },
       {
-        path: 'create',
+        path: 'home/create',
         component: FormComponent
       },
       {
-        path: 'edit/:id',
+        path: 'home/edit/:id',
        component: FormComponent
       },
       {
@@ -52,7 +52,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'posts',
+        redirectTo: 'home',
         pathMatch: 'full',
       },
     ],
