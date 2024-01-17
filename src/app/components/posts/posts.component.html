@@ -2,10 +2,10 @@
   <a routerLink="create">
     <app-small-title title="Create new post" />
   </a>
-  @defer (on timer(2000)) {
+  @defer (on timer(1000)) {
   <div class="container__inside">
     <div class="container__inside__posts">
-      @for (post of service.posts(); track post.id) {
+      @for (post of posts; track post.id) {
       <app-post [post]="post" />
       }
       <div class=""></div>

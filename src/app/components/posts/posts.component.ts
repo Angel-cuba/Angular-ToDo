@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PostServiceService } from '../../services/posts/post-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -6,6 +6,7 @@ import { SmallTitleComponent } from '../content/small-title/small-title.componen
 import { PostComponent } from './post/post.component';
 import {MatProgressBarModule } from '@angular/material/progress-bar';
 import { BigTitleComponent } from '../content/big-title/big-title.component';
+import { Post } from '../../interfaces/Post';
 
 @Component({
   selector: 'app-posts',
@@ -14,8 +15,18 @@ import { BigTitleComponent } from '../content/big-title/big-title.component';
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.scss',
 })
-export class PostsComponent {
-  public service = inject(PostServiceService);
+export class PostsComponent implements OnInit {
+  public service: PostServiceService;
 
-  constructor() {}
+  constructor(service: PostServiceService) {
+    this.service = service;
+  }
+
+  public posts: Post[] = [];
+
+  ngOnInit(): void {
+    this.service.loadPosts().subscribe((posts) => {
+      this.posts = posts.data;
+    });
+  }
 }
