@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { PostServiceService } from '../../services/posts/post-service.service';
+import { PostService } from '../../services/posts/post-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SmallTitleComponent } from '../content/small-title/small-title.component';
@@ -16,9 +16,9 @@ import { Post } from '../../interfaces/Post';
   styleUrl: './posts.component.scss',
 })
 export class PostsComponent implements OnInit {
-  public service: PostServiceService;
+  public service: PostService;
 
-  constructor(service: PostServiceService) {
+  constructor(service: PostService) {
     this.service = service;
   }
 
