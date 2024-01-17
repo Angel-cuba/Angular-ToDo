@@ -1,8 +1,40 @@
-.done {
-  text-decoration: line-through;
-  color: red;
+.btn {
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin-left: 3rem;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+  }
 }
-.not {
-  text-decoration: none;
-  color: aqua;
+.activity {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  &__todos {
+    width: 100%;
+  }
+  &__post {
+    transform: scale(0.9);
+    margin: .4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media screen and (max-width: 768px) {
+    &__todos {
+      width: 100%;
+    }
+    &__post {
+      width: 100%;
+      transform: scale(1);
+    }
+    
+  }
 }
