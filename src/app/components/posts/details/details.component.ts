@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PostServiceService } from '../../../services/posts/post-service.service';
+import { PostService } from '../../../services/posts/post-service.service';
 import { PostComponent } from '../post/post.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { Post, PostResponse } from '../../../interfaces/Post';
@@ -19,7 +19,7 @@ export class DetailsComponent implements OnInit {
   public reviews: any = [];
 
   public route = inject(ActivatedRoute);
-  public postService = inject(PostServiceService);
+  public postService = inject(PostService);
 
   constructor(private router: Router) {}
 

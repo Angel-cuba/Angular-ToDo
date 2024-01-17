@@ -8,7 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { SmallTitleComponent } from '../../content/small-title/small-title.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PostServiceService } from '../../../services/posts/post-service.service';
+import { PostService } from '../../../services/posts/post-service.service';
 
 @Component({
   selector: 'app-post',
@@ -33,7 +33,7 @@ export class PostComponent {
   public userId: string = '272734628828jd83';
 
   public route = inject(ActivatedRoute);
-  public postService = inject(PostServiceService);
+  public postService = inject(PostService);
 
   constructor(private router: Router) {
     this.route.params.subscribe((params) => {

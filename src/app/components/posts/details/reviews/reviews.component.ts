@@ -1,5 +1,4 @@
 import { Component, Input, inject } from '@angular/core';
-import { PostServiceService } from '../../../../services/posts/post-service.service';
 
 @Component({
   selector: 'app-reviews',

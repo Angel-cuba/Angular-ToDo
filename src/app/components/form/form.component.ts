@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PostServiceService } from '../../services/posts/post-service.service';
+import { PostService } from '../../services/posts/post-service.service';
 import { Post } from '../../interfaces/Post';
 import { TagComponent } from '../posts/tag/tag.component';
 
@@ -32,7 +32,7 @@ export class FormComponent {
   public userId: string = '272734628828jd83';
 
   public route = inject(ActivatedRoute);
-  public post = inject(PostServiceService);
+  public post = inject(PostService);
 
   public form: FormGroup = this.formBuilder.group({
     title: [
