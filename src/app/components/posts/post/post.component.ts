@@ -5,9 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { SmallTitleComponent } from '../../content/small-title/small-title.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { PostServiceService } from '../../../services/posts/post-service.service';
 
 @Component({
   selector: 'app-post',
@@ -26,19 +27,24 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   styleUrl: './post.component.scss',
 })
 export class PostComponent {
-  @Input() post: Post | undefined;
-  public id : string = '';
+  @Input() post: Post | any;
+  public id: string = '';
+  public liked: boolean = false;
+  public userId: string = '272734628828jd83';
 
   public route = inject(ActivatedRoute);
+  public postService = inject(PostServiceService);
+
   constructor(private router: Router) {
-   this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
   }
 
   likePost(id: string | undefined) {
+    this.liked = !this.liked;
     console.log('🚀 ~ PostComponent ~ likePost ~ postId', id);
-
+    console.log('this id', this.id);
   }
 
   editPost(id: string | undefined) {
@@ -46,6 +52,10 @@ export class PostComponent {
   }
 
   deletePost(id: string | undefined) {
-    console.log('🚀 ~ PostComponent ~ deletePost ~ postId', id);
+    if (id === undefined) return;
+    this.postService.deletePost(id, this.userId).subscribe((post) => {
+      console.log('🚀 ~ PostComponent ~ deletePost ~ post', post);
+      this.router.navigate(['hero/home']);
+    });
   }
 }
