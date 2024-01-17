@@ -7,9 +7,13 @@ import { Observable } from 'rxjs';
 type PostState = {
   allPosts: Post[];
 };
-type PState = {
-  post: Post | any;
-};
+type createPost = {
+  title: string;
+  body: string;
+  authorId: string;
+  image: string;
+  tags: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -24,21 +28,26 @@ export class PostServiceService {
     this.loadPosts();
   }
 
-  loadPosts() {
-    this.http
-      .get<PostResponse>(this.url + 'posts/all')
-      .subscribe((response) => {
-        this.#postState.set({
-          allPosts: response.data,
-        });
-      });
+  loadPosts(): Observable<PostResponse> {
+    return this.http.get<PostResponse>(this.url + 'posts/all');
   }
-
-  getPostById(id: string) {
+  getPostById(id: string): Observable<PostResponse> {
     return this.http.get<PostResponse>(this.url + 'posts/' + id);
   }
 
   getReviewsByPostId(id: string): Observable<PostResponse> {
     return this.http.get<PostResponse>(this.url + 'reviews/all/' + id);
+  }
+
+  createPost(post: createPost): Observable<PostResponse> {
+    return this.http.post<PostResponse>(this.url + 'posts/create', post);
+  }
+
+  editPost(postId: string, post: Post, userId: string): Observable<PostResponse> {
+    return this.http.put<PostResponse>(this.url + `posts/${postId}/update/${userId}`, post);
+  }
+
+  deletePost(postId: string, userId: string): Observable<PostResponse> {
+    return this.http.delete<PostResponse>(this.url + `posts/${postId}/delete/${userId}`);
   }
 }
