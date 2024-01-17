@@ -1,12 +1,9 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Post, PostResponse } from '../../interfaces/Post';
 import { Observable } from 'rxjs';
 
-type PostState = {
-  allPosts: Post[];
-};
 type createPost = {
   title: string;
   body: string;
@@ -17,12 +14,8 @@ type createPost = {
 @Injectable({
   providedIn: 'root',
 })
-export class PostServiceService {
+export class PostService {
   url: string = environment.localUrl;
-
-  #postState = signal<PostState>({ allPosts: [] });
-
-  public posts = computed(() => this.#postState().allPosts);
 
   constructor(private http: HttpClient) {
     this.loadPosts();
@@ -31,6 +24,11 @@ export class PostServiceService {
   loadPosts(): Observable<PostResponse> {
     return this.http.get<PostResponse>(this.url + 'posts/all');
   }
+
+  loadPostsByUserId(authorId: string): Observable<PostResponse> {
+    return this.http.get<PostResponse>(this.url + 'posts/author/' + authorId);
+  }
+
   getPostById(id: string): Observable<PostResponse> {
     return this.http.get<PostResponse>(this.url + 'posts/' + id);
   }
