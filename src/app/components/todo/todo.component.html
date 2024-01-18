@@ -1,10 +1,11 @@
 <button class="btn" (click)="switchTo()" [ngStyle]="{
-  'background-color': showTodo ? '#f44336' : '#192C19',
+  'background-color': showTodo ? '#4B0500' : '#192C19',
   'color': '#EEEEEE',
-  'border': showTodo ? '1px solid #f44336' : '1px solid #192C19',
-  'box-shadow': showTodo ? '0 0 5px #f44336' : '0 0 5px #192C19',
+  'border': showTodo ? '1px solid #4B0500' : '1px solid #192C19',
+  'box-shadow': showTodo ? '0 0 3px 0 #4B0500' : '0 0 3px 0 #192C19',
   'outline': 'none',
-  'cursor': 'pointer'
+  'cursor': 'pointer',
+   'hover': 'cursor: pointer; background-color: #4B0500; color: #cccccc; border: 1px solid #4B0500; box-shadow: 0 0 3px #4B0500'
 }">
   {{ showTodo ? 'Activities': 'Your post go here' }}</button>
 <div class="activity">
