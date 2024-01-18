@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../services/posts/post-service.service';
 import { Post } from '../../interfaces/Post';
 import { TagComponent } from '../posts/tag/tag.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-form',
@@ -52,7 +53,11 @@ export class FormComponent {
   public image: string = '';
   public tags: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private toaster: ToastrService
+  ) {
     this.route.params.subscribe((params) => {
       const postId = params['id'];
       if (postId) {
@@ -69,20 +74,29 @@ export class FormComponent {
       }
     });
   }
-  processTags(tags: any) {
-    if (tags.length === 0) return [];
-    if (tags.length === 1) return tags.split(' ');
-    if (this.tags.length === this.form.value.tags.length) return tags;
-    // Comprobar si la cadena original tiene comas
-    if (tags.includes(',')) {
-      // Si ya tiene comas, simplemente dividir por comas
-      return tags.split(',');
+  processTags(tags: string | string[]) {
+    if (!tags || tags.length === 0) return [];
+
+    // Si tags es una cadena, convertirla a un array
+    if (typeof tags === 'string') {
+      if (tags.includes(',')) {
+        // Si ya tiene comas, simplemente dividir por comas
+        return tags.split(',');
+      } else {
+        // Si no tiene comas, agregarlas y luego dividir por espacios
+        const chain = tags.split(' ').join(',');
+        return chain.split(',');
+      }
+    } else if (Array.isArray(tags)) {
+      // Si tags es un array, devolverlo directamente
+      return tags;
     } else {
-      // Si no tiene comas, agregarlas y luego dividir por espacios
-      const chain = tags.split(' ').join(',');
-      return chain.split(',');
+      // Manejar otros casos según sea necesario
+      this.toaster.error('Formato de tags no compatible');
+      return [];
     }
   }
+
   savePost() {
     if (!this.form.valid) return;
 
@@ -96,9 +110,14 @@ export class FormComponent {
           : [],
         authorId: this.userId,
       };
-      this.post.editPost(this.id, post, this.userId).subscribe((response) => {
-        console.log('Post actualizado:', response);
-        this.router.navigate(['hero/home']);
+      this.post.editPost(this.id, post, this.userId).subscribe({
+        next: (response) => {
+          this.toaster.success(response.message);
+          this.router.navigate(['hero/home']);
+        },
+        error: (error) => {
+          this.toaster.error(error.message);
+        },
       });
     } else {
       const post: any = {
@@ -110,9 +129,14 @@ export class FormComponent {
           : [],
         authorId: this.userId,
       };
-      this.post.createPost(post).subscribe((response) => {
-        console.log('Post creado:', response);
-        this.router.navigate(['hero/home']);
+      this.post.createPost(post).subscribe({
+        next: (response) => {
+          this.toaster.success(response.message);
+          this.router.navigate(['hero/home']);
+        },
+        error: (error) => {
+          this.toaster.error(error.message);
+        },
       });
     }
   }
