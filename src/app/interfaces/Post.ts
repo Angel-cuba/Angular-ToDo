@@ -1,20 +1,17 @@
 export interface Post {
-  id: string;
+  id?: string;
   title: string;
   body: string;
-  userId: string;
+  authorId: string;
   image: string;
-  likes: string[];
+  likes?: string[];
   tags: string[];
-  reviewIds: ReviewIds[];
-  createdAt: string;
+  reviewIds?: ReviewIds[];
+  createdAt?: string;
   updatedAt?: string;
 }
-type ReviewIds = {
-  id: {
-    timestamp: number;
-    date: Date;
-  };
+export type ReviewIds = {
+  id: string
   authorId: string;
   body: string;
   createdAt: string;
