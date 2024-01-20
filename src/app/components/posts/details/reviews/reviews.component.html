@@ -1,3 +1,7 @@
+@if (reviews) {
 @for (review of reviews; track $index) {
-  <p>{{ review?.body }}</p>
+<p class="review">{{ review?.body[0].toUpperCase() }}{{ review?.body.slice(1) }}</p>
+}
+} @else {
+<p class="review">Nothing to show</p>
 }
