@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Post, PostResponse } from '../../interfaces/Post';
+import { Post, PostByIdResponse, PostResponse } from '../../interfaces/Post';
 import { Observable } from 'rxjs';
 
 type createPost = {
@@ -29,8 +29,8 @@ export class PostService {
     return this.http.get<PostResponse>(this.url + 'posts/author/' + authorId);
   }
 
-  getPostById(id: string): Observable<PostResponse> {
-    return this.http.get<PostResponse>(this.url + 'posts/' + id);
+  getPostById(id: string): Observable<PostByIdResponse> {
+    return this.http.get<PostByIdResponse>(this.url + 'posts/' + id);
   }
 
   getReviewsByPostId(id: string): Observable<PostResponse> {
