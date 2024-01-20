@@ -1,13 +1,32 @@
 .container {
+  position: relative;
   margin-top: 20px;
   padding: 1rem 0.5rem;
+  a {
+    position:absolute;
+    top: -1.21rem;
+    left: 9%;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid #808080a6;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    transition: all 0.1s ease-in-out;
+    &:hover {
+      cursor: pointer;
+      color: #000000;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+      text-shadow: 0 0 1px 0 #000000;
+    }
+  }
   &__inside {
     width: 90%;
     margin: 0 auto;
-      &__posts {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
+    &__posts {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
   }
 }
