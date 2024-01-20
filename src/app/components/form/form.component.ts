@@ -28,12 +28,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class FormComponent {
   public isEditing: boolean = false;
+  public isError: boolean = false;
+  public errorMessage: string = '';
   public id: string = '';
   public postData: Post | any = {};
   public userId: string = '272734628828jd83';
-
-  public route = inject(ActivatedRoute);
-  public post = inject(PostService);
 
   public form: FormGroup = this.formBuilder.group({
     title: [
@@ -46,7 +45,7 @@ export class FormComponent {
     ],
     authorId: [''],
     image: ['', [Validators.required, Validators.pattern('https?://.+')]],
-    tags: [''],
+    tags: ['', Validators.pattern('^[a-zA-Z0-9, ]+$')],
   });
   public title: string = '';
   public body: string = '';
@@ -56,7 +55,9 @@ export class FormComponent {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private route: ActivatedRoute,
+    private post: PostService
   ) {
     this.route.params.subscribe((params) => {
       const postId = params['id'];
@@ -65,49 +66,80 @@ export class FormComponent {
         this.id = postId;
         this.post.getPostById(postId).subscribe((post) => {
           this.postData = post.data;
-          this.form.patchValue(this.postData);
-          this.title = this.form.value.title;
-          this.body = this.form.value.body;
-          this.image = this.form.value.image;
-          this.tags = this.form.value.tags;
+          //Pasar valores a los inputs menos al los tags
+          this.form.patchValue({ title: this.postData.title });
+          this.form.patchValue({ body: this.postData.body });
+          this.form.patchValue({ image: this.postData.image });
+          this.title = post.data.title;
+          this.body = post.data.body;
+          this.image = post.data.image;
+          this.tags = post.data.tags;
         });
       }
     });
   }
-  processTags(tags: string | string[]) {
-    if (!tags || tags.length === 0) return [];
+  processTags(newTags: any) {
+    this.isError = false;
+    this.errorMessage = '';
+    if (this.tags.length === 0 && newTags.length === 0) return [];
 
-    // Si tags es una cadena, convertirla a un array
-    if (typeof tags === 'string') {
-      if (tags.includes(',')) {
-        // Si ya tiene comas, simplemente dividir por comas
-        return tags.split(',');
-      } else {
-        // Si no tiene comas, agregarlas y luego dividir por espacios
-        const chain = tags.split(' ').join(',');
-        return chain.split(',');
+    // Si no se agrega un nuevo tag o no se elimina uno, no hacer nada
+    if (newTags.length === 0 && this.tags.length > 0) return this.tags;
+
+    // Si no hay tags, pero se agregan nuevos, devolver los nuevos
+    if (newTags.length > 0 && this.tags.length === 0) {
+      const newList = this.form.value.tags
+        .split(',')
+        .map((tag: string) => tag.trim());
+      return newList;
+    }
+    // Si los arrays son iguales, no hacer nada
+    const arryOfTags = this.form.value.tags
+      .split(',')
+      .map((tag: string) => tag.trim().toLowerCase().split(' ').join(''));
+    if (this.areStringArraysEqual(this.tags, arryOfTags)) {
+      return this.toaster.error('The tags are the same');
+    }
+    if (newTags.length > 0 && this.tags.length > 0) {
+      const found = this.tags.some((tag: string) => {
+        return arryOfTags.includes(tag);
+      });
+      if (found) {
+        return this.toaster.warning('Some of the tags are not in the list');
       }
-    } else if (Array.isArray(tags)) {
-      // Si tags es un array, devolverlo directamente
-      return tags;
-    } else {
-      // Manejar otros casos según sea necesario
-      this.toaster.error('Formato de tags no compatible');
-      return [];
+      console.log(' pasooooooo');
+      //quitar espacios en blanco
+      const newTagsList = this.form.value.tags
+        .split(',')
+        .map((tag: string) => tag.trim().toLowerCase().split(' ').join(''));
+      //concatenar los tags
+      const tags = this.tags.concat(newTagsList);
+      //eliminar duplicados
+      const uniqueTags = [...new Set(tags)];
+      //si hay espacios que devuelva el array con comas
+      return uniqueTags;
+    }
+    if (newTags.includes(',') && newTags.includes(' ')) {
+      // Si ya tiene comas, simplemente dividir por comas
+      return newTags
+        .split(',')
+        .map((tag: string) => tag.trim().split(' ').join(', '));
     }
   }
 
   savePost() {
-    if (!this.form.valid) return;
+    if (!this.form.valid) {
+      this.toaster.error('Seems that you have some errors in the form');
+      return;
+    }
+    const tagsValues = this.processTags(this.form.value.tags);
 
     if (this.isEditing) {
       const post: any = {
         title: this.form.value.title,
         body: this.form.value.body,
         image: this.form.value.image,
-        tags: this.form.value.tags
-          ? this.processTags(this.form.value.tags)
-          : [],
+        tags: tagsValues,
         authorId: this.userId,
       };
       this.post.editPost(this.id, post, this.userId).subscribe({
@@ -124,9 +156,7 @@ export class FormComponent {
         title: this.form.value.title,
         body: this.form.value.body,
         image: this.form.value.image,
-        tags: this.form.value.tags
-          ? this.processTags(this.form.value.tags)
-          : [],
+        tags: tagsValues,
         authorId: this.userId,
       };
       this.post.createPost(post).subscribe({
@@ -145,6 +175,7 @@ export class FormComponent {
     if (this.form.valid) {
       this.form.reset();
     }
+    this.toaster.info('Post canceled');
     this.router.navigate(['hero/home']);
   }
 
@@ -153,5 +184,37 @@ export class FormComponent {
     if (index > -1) {
       this.tags.splice(index, 1);
     }
+  }
+
+  //Compare arrays
+  areStringArraysEqual(strArray1: string[], strArray2: string[]): boolean {
+    // Verificar si ambos arrays tienen la misma longitud
+    if (strArray1.length !== strArray2.length) {
+      return false;
+    }
+
+    // Comparar cada elemento individual de los arrays
+    for (let i = 0; i < strArray1.length; i++) {
+      const list1 = strArray1[i]
+        .split(',')
+        .map((item) => item.trim().toLowerCase());
+      const list2 = strArray2[i]
+        .split(',')
+        .map((item) => item.trim().toLowerCase());
+
+      // Verificar si las listas tienen la misma longitud
+      if (list1.length !== list2.length) {
+        return false;
+      }
+
+      // Comparar cada elemento individual de las listas
+      for (let j = 0; j < list1.length; j++) {
+        if (list1[j] !== list2[j]) {
+          return false;
+        }
+      }
+    }
+    // Si no se encontraron diferencias, los arrays son iguales
+    return true;
   }
 }

@@ -17,7 +17,7 @@
           <div class="container__form__input">
             <label class="container__form__input--label" for="body">Body: </label>
             <textarea name="body" id="body" cols="30" rows="10" formControlName="body"
-              [placeholder]="[ isEditing ? 'Editing' : 'Give a body']"></textarea>
+              [placeholder]="[ isEditing ? this.body : 'Give a body']"></textarea>
             <span class="container__form__input--error"
               *ngIf="this.form.controls['body'].getError('required') && form.touched">Field
               required!</span>
@@ -27,7 +27,7 @@
           <div class="container__form__input">
             <label class="container__form__input--label" for="image">Image: </label>
             <input type="text" id="image" name="image" formControlName="image"
-              [placeholder]="[ isEditing ? 'Editing' : 'Give a image']">
+              [placeholder]="[ isEditing ? this.image : 'Give a image']">
             <span class="container__form__input--error"
               *ngIf="this.form.controls['image'].getError('required') && form.touched">Field
               required!</span>
@@ -35,34 +35,45 @@
               *ngIf="form.controls['image'].getError('minlength')">Minimum of 3</span>
           </div>
           <div class="container__form__input">
-            @if (tags) {
-            <div class="">
-              @for (tag of tags; track $index) {
-              <app-tag [tag]="tag" [index]="$index" (deleteTagEvent)="deleteTag($event)"></app-tag>
+            <label class="container__form__input--label" for="tags">Tags:
+              @if (tags) {
+              <div class="container__form__input--to-delete">
+                @for (tag of tags; track $index) {
+                <div class="container__form__input--to-delete--item" (click)="deleteTag(tag)">
+                  <app-tag [tag]="tag"></app-tag> <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" fill="#ff0000" class="bi bi-trash3" viewBox="0 0 16 16">
+                    <path
+                      d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                  </svg>
+                </div>
+                }
+              </div>
               }
-            </div>
-            }
-            <label class="container__form__input--label" for="tags">Tags: </label>
+            </label>
             <input type="text" id="tags" name="tags" formControlName="tags"
-              [placeholder]="[ isEditing ? 'Editing' : 'Give a tags']">
+              [placeholder]="[ isEditing ?  'Add new tag or delete some' : 'Add tags as: love, other, more ']">
             <span class="container__form__input--error"
-              *ngIf="this.form.controls['tags'].getError('required') && form.touched">Field
-              required!</span>
-            <span class="container__form__input--error"
-              *ngIf="form.controls['tags'].getError('minlength')">Minimum of 3</span>
+              *ngIf="form.controls['tags'].getError('pattern')">Only letters and numbers</span>
           </div>
           <button class="container__form__btn" type="submit" [disabled]="form.invalid"> {{!isEditing
             ? 'Add your post' : 'Edit your selection'}}</button>
-          <button class="container__form__btn container__form__btn--cancel"
-            (click)="cancelPost()">Cancel</button>
         </form>
+        <span class="cancel" (click)="cancelPost()">Cancel</span>
       </fieldset>
     </section>
   </div>
   <div class="container__post-details">
     <span class="container__post-details--title">{{ form.value.title }}</span>
     <span class="container__post-details--body"> {{ form.value.body }}</span>
-    <img src="{{ this.form.value.image }}" alt="">
-    <span>{{ this.form.value.tags }}</span>
+    <img
+      src="{{ !this.form.value.image && !isEditing ? 'https://res.cloudinary.com/dqaerysgb/image/upload/v1648218398/istockphoto-1132926013-612x612_t1xwec.jpg' : this.image }}"
+      alt="">
+    @if(tags.length > 0) {
+    <div class="container__post-details--tags">
+      @for (tag of tags; track $index) {
+      <app-tag [tag]="tag" />
+      }
+    </div>
+    }
   </div>
 </div>

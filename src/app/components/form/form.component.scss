@@ -1,4 +1,7 @@
 .container {
+  position: relative;
+  width: 100%;
+  min-height: 87.8%;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -10,8 +13,29 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     fieldset {
+      position: relative;
       margin-bottom: 20px;
       border: none;
+      .cancel {
+        position: absolute;
+        bottom: -5.27rem;
+        left: 0;
+        min-width: 100%;
+        padding: 10px;
+        margin-top: 1rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        background-color: #ff5555;
+        &:hover {
+          background-color: #ffffff;
+          color: #ff5555;
+          border: 1px solid #ff5555;
+        }
+      }
     }
     legend {
       font-size: 1.5rem;
@@ -26,6 +50,9 @@
         font-size: 1.1rem;
         font-weight: bold;
         margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       input {
         width: 100%;
@@ -59,6 +86,30 @@
         font-size: 0.9rem;
         margin-top: 5px;
       }
+      &--to-delete {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        &--item {
+          margin-right: 4px;
+          font-size: 0.9rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            transform: scale(1);
+          }
+          svg {
+            transition: all 0.2s ease-in-out;
+            background-color: transparent !important;
+            &:hover {
+              color: #ff0000;
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
     }
     &__btn {
       width: 100%;
@@ -77,17 +128,6 @@
         color: #073a00;
         border: 1px solid #073a00;
       }
-      &--cancel {
-        margin-top: 5px;
-        background-color: #ffffff;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        &:hover {
-          background-color: #ff0000;
-          color: #ffffff;
-          border: 1px solid #ffffff;
-        }
-      }
     }
   }
   &__post-details {
@@ -99,7 +139,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    &--title{
+    &--title {
       margin-bottom: 6px;
       font-size: 16px;
       color: #000000;
@@ -115,7 +155,12 @@
       height: 60%;
       border-radius: 5px;
       margin-bottom: 10px;
-
+    }
+    &--tags {
+      width: 92%;
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
     }
   }
   @media screen and (max-width: 768px) {
