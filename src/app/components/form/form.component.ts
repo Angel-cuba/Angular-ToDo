@@ -78,6 +78,7 @@ export class FormComponent {
       }
     });
   }
+  //TODO: Hacer que cada tag no tenga espacios, ni delante, atrás o en el medio
   processTags(newTags: any) {
     this.isError = false;
     this.errorMessage = '';
@@ -107,7 +108,6 @@ export class FormComponent {
       if (found) {
         return this.toaster.warning('Some of the tags are not in the list');
       }
-      console.log(' pasooooooo');
       //quitar espacios en blanco
       const newTagsList = this.form.value.tags
         .split(',')
@@ -133,15 +133,14 @@ export class FormComponent {
       return;
     }
     const tagsValues = this.processTags(this.form.value.tags);
-
+    const post: Post | any = {
+      title: this.form.value.title,
+      body: this.form.value.body,
+      image: this.form.value.image,
+      tags: tagsValues,
+      authorId: this.userId,
+    };
     if (this.isEditing) {
-      const post: any = {
-        title: this.form.value.title,
-        body: this.form.value.body,
-        image: this.form.value.image,
-        tags: tagsValues,
-        authorId: this.userId,
-      };
       this.post.editPost(this.id, post, this.userId).subscribe({
         next: (response) => {
           this.toaster.success(response.message);
@@ -152,13 +151,6 @@ export class FormComponent {
         },
       });
     } else {
-      const post: any = {
-        title: this.form.value.title,
-        body: this.form.value.body,
-        image: this.form.value.image,
-        tags: tagsValues,
-        authorId: this.userId,
-      };
       this.post.createPost(post).subscribe({
         next: (response) => {
           this.toaster.success(response.message);
