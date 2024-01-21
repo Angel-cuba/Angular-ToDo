@@ -2,17 +2,33 @@
   <div class="details__post">
     <app-post [post]="post"></app-post>
   </div>
-  @if (reviews?.length) {
-      <div class="details__reviews">
-    @defer (on timer(2000)) {
-    <app-reviews [reviews]="reviews"></app-reviews>
-    } @placeholder {
+  <div class="details__reviews">
+    <form (ngSubmit)="saveReview()" [formGroup]="form">
+      <div class="details__reviews__input">
+        <label class="details__reviews__input--label" for="body">Add a review</label>
+        <textarea name="body" id="body" cols="30" rows="10" formControlName="body"
+          [placeholder]="[ isEditing ? 'this.body' : 'Write something here...']"></textarea>
+        <span class="details__reviews__input--error"
+          *ngIf="this.form.controls['body'].getError('required') && form.touched">Field
+          required!</span>
+        <span class="details__reviews__input--error"
+          *ngIf="form.controls['body'].getError('minlength')">Minimum of 3</span>
+      </div>
+      <button class="details__reviews--btn" type="submit" (click)="saveReview()">Add your
+        review</button>
+    </form>
+    @if (reviews?.length) {
+    <div class="details__reviews--content">
+      @defer (on timer(2000)) {
+      <app-reviews [id]="id"></app-reviews>
+      } @placeholder {
       <p>Oh! Wait a second! It is loading...</p>
+      }
+    </div>
+    } @else {
+    <span class="details__reviews--empty-box" title="There are not reviews yet">This post doesn't
+      have any review yet. <br /> You could be the first....</span>
     }
   </div>
-  } @else {
-    <p title="There are not reviews yet">Nothing to show</p>
-  }
-  
   <span class="details__back" (click)="goBack()">Go back</span>
 </div>

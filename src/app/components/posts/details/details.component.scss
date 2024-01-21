@@ -19,6 +19,109 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     overflow-y: auto;
+    &__input {
+      width: 100%;
+      margin-bottom: 10px;
+      &--label {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #d3d3d3;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+        &:focus {
+          border: 1px solid #000000;
+        }
+      }
+      input[type="file"] {
+        padding: 0;
+        border: none;
+        outline: none;
+      }
+      textarea {
+        width: 90%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #d3d3d3;
+        outline: none;
+        margin-left: 5%;
+        transition: all 0.3s ease-in-out;
+        &:focus {
+          border: 1px solid #000000;
+        }
+      }
+      &--error {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+      &--to-delete {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        &--item {
+          margin-right: 4px;
+          font-size: 0.9rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            transform: scale(1);
+          }
+          svg {
+            transition: all 0.2s ease-in-out;
+            background-color: transparent !important;
+            &:hover {
+              color: #ff0000;
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+    &--btn {
+      width: 90%;
+      padding: 10px;
+      margin-left: 5%;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      background-color: #073a00;
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        background-color: #ffffff;
+        color: #073a00;
+        border: 1px solid #073a00;
+      }
+    }
+    &--content {
+      border: 1px solid red;
+      margin-top: 1rem;
+    }
+    &--empty-box {
+      width: 100%;
+      margin-top: 2rem;;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #424242;
+      text-align: center;
+    }
   }
   &__back {
     position: absolute;
