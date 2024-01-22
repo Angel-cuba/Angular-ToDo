@@ -5,3 +5,9 @@ export interface Review {
   createdAt: string;
   updatedAt?: string;
 };
+
+export interface ReviewInterfaceResponse {
+  data: Review[];
+  message: string;
+  status: string;
+}
