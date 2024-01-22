@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../../services/posts/post-service.service';
 import { PostComponent } from '../post/post.component';
 import { ReviewsComponent } from './reviews/reviews.component';
-import { Post, PostResponse } from '../../../interfaces/Post';
+import { Post } from '../../../interfaces/Post';
 import { ToastrService } from 'ngx-toastr';
 import {
   FormBuilder,
@@ -12,7 +13,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { ReviewService } from '../../../services/review/review.service';
+import { Review } from '../../../interfaces/Reviews';
 
 @Component({
   selector: 'app-details',
@@ -32,7 +34,7 @@ export class DetailsComponent implements OnInit {
   //TODO: Cambiar los types any por los tipos correctos
   public id: string = '';
   public post: Post | any = {};
-  public reviews: any = [];
+  public reviews: Review[] = [];
   public isEditing: boolean = false;
 
   public body: string = '';
@@ -49,7 +51,8 @@ export class DetailsComponent implements OnInit {
     private toaster: ToastrService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private postService: PostService
+    private postService: PostService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
@@ -64,11 +67,7 @@ export class DetailsComponent implements OnInit {
 
         // Hacer el segundo fetch para obtener las reviews basadas en el ID del post
         if (this.post?.reviewIds?.length > 0) {
-          this.postService.getReviewsByPostId(this.id).subscribe((reviews) => {
-            this.reviews = reviews.data;
-            // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
-            this.processReviews(reviews);
-          });
+          this.loadReviews();
         }
       });
     });
@@ -76,8 +75,7 @@ export class DetailsComponent implements OnInit {
 
   // Función que procesa el post
   private processPost() {
-    console.log('Post obtenido:', this.post);
-    // Puedes realizar cualquier acción adicional basada en la información del post aquí
+    // Acción adicional basada en la información del post
     this.toaster.info(
       'Let us know what you think about this post!',
       this.post.title,
@@ -89,9 +87,16 @@ export class DetailsComponent implements OnInit {
   }
 
   // Función que procesa las reviews
-  private processReviews(reviews: any) {
-    console.log('Reviews obtenidas:', reviews);
-    // Puedes realizar cualquier acción adicional basada en las reviews aquí
+  private processReviews(reviewsLength: number) {
+    this.toaster.show(`This post has ${reviewsLength} reviews`);
+  }
+
+  loadReviews() {
+    this.reviewService.getReviewsByPostId(this.id).subscribe((reviews) => {
+      this.reviews = reviews.data;
+      // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
+      this.processReviews(reviews.data.length);
+    });
   }
 
   saveReview() {
@@ -102,13 +107,18 @@ export class DetailsComponent implements OnInit {
       body: this.form.value.body,
       authorId: '272734628828jd83',
     };
-    console.log('🚀 ~ DetailsComponent ~ saveReview ~ review:', review);
 
     // Llamada a la función que guarda la review
-    // this.postService.createReview(review).subscribe((review) => {
-    // Llamada a la función que procesa la review (por ejemplo, mostrar un modal)
-    //this.processReview(review);
-    // });
+    this.reviewService.createReview(this.id, review).subscribe({
+      next: (response) => {
+        // Llamada a la función que carga las reviews
+        this.loadReviews();
+        this.toaster.success('Review created successfully!', 'Success');
+      },
+      error: (error) => {
+        this.toaster.error('Error creating review', 'Error');
+      },
+    });
     this.form.reset();
   }
 
