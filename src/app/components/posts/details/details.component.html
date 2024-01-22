@@ -17,10 +17,10 @@
       <button class="details__reviews--btn" type="submit" (click)="saveReview()">Add your
         review</button>
     </form>
-    @if (reviews?.length) {
+    @if (post?.reviewIds?.length) {
     <div class="details__reviews--content">
       @defer (on timer(2000)) {
-      <app-reviews [id]="id"></app-reviews>
+      <app-reviews [reviews]="reviews"></app-reviews>
       } @placeholder {
       <p>Oh! Wait a second! It is loading...</p>
       }
