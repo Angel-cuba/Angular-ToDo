@@ -33,10 +33,6 @@ export class PostService {
     return this.http.get<PostByIdResponse>(this.url + 'posts/' + id);
   }
 
-  getReviewsByPostId(id: string): Observable<PostResponse> {
-    return this.http.get<PostResponse>(this.url + 'reviews/all/' + id);
-  }
-
   createPost(post: createPost): Observable<PostResponse> {
     return this.http.post<PostResponse>(this.url + 'posts/create', post);
   }
