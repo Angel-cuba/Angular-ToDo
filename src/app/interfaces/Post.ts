@@ -1,3 +1,5 @@
+import { Review } from "./Reviews";
+
 export interface Post {
   id?: string;
   title: string;
@@ -6,17 +8,10 @@ export interface Post {
   image: string;
   likes?: string[];
   tags: string[];
-  reviewIds?: ReviewIds[];
+  reviewIds?: Review[];
   createdAt?: string;
   updatedAt?: string;
 }
-export type ReviewIds = {
-  id: string
-  authorId: string;
-  body: string;
-  createdAt: string;
-  updatedAt?: string;
-};
 
 export interface PostResponse {
   data: Post[];
