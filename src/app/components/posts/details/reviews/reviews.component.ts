@@ -12,6 +12,16 @@ import { CommonModule } from '@angular/common';
 })
 export class ReviewsComponent {
   @Input() reviews: Review[] = [];
+  userPicture: string = 'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020658/samples/bike.jpg';
+  userName: string = 'John Doe';
 
   constructor() {}
+
+  likeReview(reviewId: string) {
+    console.log(reviewId);
+  }
+
+  dislikeReview(reviewId: string) {
+    console.log(reviewId);
+  }
 }
