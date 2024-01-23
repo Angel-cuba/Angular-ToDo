@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Review } from '../../../../interfaces/Reviews';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-reviews',
   standalone: true,
@@ -22,6 +21,14 @@ export class ReviewsComponent {
   }
 
   dislikeReview(reviewId: string) {
+    console.log(reviewId);
+  }
+
+  editReview(reviewId: string) {
+    console.log(reviewId);
+  }
+
+  deleteReview(reviewId: string) {
     console.log(reviewId);
   }
 }

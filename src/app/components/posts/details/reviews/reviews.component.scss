@@ -55,33 +55,90 @@
     align-items: flex-start;
   }
   &__footer {
+    position: relative;
     width: 10%;
     height: 50px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    &--actions {
-      background-color: aqua;
+    &__actions {
+      width: 20%;
+      height: 100%;
       display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
       &--action {
-        width: auto;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 0.6rem;
-        cursor: pointer;
-        &--icon {
+        margin-left: 5px;
+        svg {
           width: 20px;
           height: 20px;
-          margin-right: 0.2rem;
-          fill: #a2a2a2;
+          fill: #797979;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            fill: #ff5555;
+            cursor: pointer;
+            transform: scale(1.2);
+          }
         }
-        &--text {
-          font-size: 0.8rem;
-          font-weight: bold;
-          color: #a2a2a2;
+        &:nth-child(1) {
+          svg {
+            &:hover {
+              fill: #ff0000;
+              cursor: pointer;
+              transform: scale(1.2);
+            }
+          }
+          &:nth-child(2) {
+            svg {
+              &:hover {
+                fill: #ff8800;
+                cursor: pointer;
+                transform: scale(1.2);
+              }
+            }
+          }
         }
+      }
+    }
+    &__user-actions {
+      width: 60px;
+      height: 30px;
+      position: absolute;
+      bottom: -22px;
+      right: 2rem;
+      z-index: 1;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0.8;
+      &--action {
+        padding: 1px;
+        margin-top: 5px;
+        svg {
+          width: 20px;
+          height: 20px;
+          transition: all 0.3s ease-in-out;
+        }
+        &:nth-child(1) {
+          svg {
+            &:hover {
+              fill: #267900;
+              cursor: pointer;
+              transform: scale(1.2);
+            }
+          }
+        }
+        &:nth-child(2) {
+          svg {
+            &:hover {
+              fill: #5a0000;
+              cursor: pointer;
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+      &:hover {
+        opacity: 1;
       }
     }
   }
