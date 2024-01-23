@@ -95,7 +95,7 @@ export class DetailsComponent implements OnInit {
     this.reviewService.getReviewsByPostId(this.id).subscribe((reviews) => {
       this.reviews = reviews.data;
       // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
-      this.processReviews(reviews.data.length);
+      this.processReviews(reviews?.data?.length);
     });
   }
 
@@ -112,7 +112,9 @@ export class DetailsComponent implements OnInit {
     this.reviewService.createReview(this.id, review).subscribe({
       next: (response) => {
         // Llamada a la función que carga las reviews
-        this.loadReviews();
+        this.reviewService
+          .getReviewsByPostId(this.id)
+          .subscribe((reviews) => (this.reviews = reviews.data));
         this.toaster.success('Review created successfully!', 'Success');
       },
       error: (error) => {
