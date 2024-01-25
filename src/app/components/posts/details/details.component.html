@@ -22,7 +22,7 @@
     <div class="details__reviews__content">
       @defer (on timer(2000)) {
       <div class="details__reviews__content--posts">
-        <app-reviews [reviews]="reviews"></app-reviews>
+        <app-reviews [reviews]="reviews" (reviewIdChange)="show($event)" ></app-reviews>
       </div>
       } @placeholder {
       <p>Oh! Wait a second! It is loading...</p>

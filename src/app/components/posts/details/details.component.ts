@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../../services/posts/post-service.service';
@@ -36,6 +36,20 @@ export class DetailsComponent implements OnInit {
   public post: Post | any = {};
   public reviews: Review[] = [];
   public isEditing: boolean = false;
+  public review: Review | any = {};
+
+  private _reviewId: string = '';
+
+  @Input()
+  set reviewId(value: string) {
+    this._reviewId = value;
+    this.isEditing = true
+    this.getReview();
+  }
+
+  get reviewId(): string {
+    return this._reviewId;
+  }
 
   public body: string = '';
 
@@ -99,6 +113,13 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  getReview() {
+    this.reviewService.getReviewById(this.reviewId).subscribe((review) => {
+      console.log("🚀 ~ DetailsComponent ~ this.reviewService.getReviewById ~ review:", review)
+      this.review = review.data;
+    });
+  }
+
   saveReview() {
     if (!this.form.valid) {
       return;
@@ -127,4 +148,9 @@ export class DetailsComponent implements OnInit {
   goBack() {
     this.router.navigate(['/hero/home']);
   }
+
+  show(value: string) {
+    this.reviewId = value;
+  }
+
 }
