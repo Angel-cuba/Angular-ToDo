@@ -23,13 +23,32 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   getReviewsByPostId(id: string): Observable<ReviewInterfaceResponse> {
-    return this.http.get<ReviewInterfaceResponse>(this.url + `reviews/all/${id}`);
+    return this.http.get<ReviewInterfaceResponse>(
+      this.url + `reviews/all/${id}`
+    );
   }
 
   createReview(postId: string, review: Review) {
     return this.http.post<createReview>(
       this.url + `reviews/create/${postId}`,
       review
+    );
+  }
+
+  getReviewById(id: string) {
+    return this.http.get<Review>(this.url + `reviews/review/${id}`);
+  }
+
+  editReview(postId: string, reviewId: string, userId: string, review: Review) {
+    return this.http.put<createReview>(
+      this.url + `reviews/${postId}/update/${reviewId}/${userId}`,
+      review
+    );
+  }
+
+  deleteReview(postId: string, reviewId: string, userId: string) {
+    return this.http.delete<createReview>(
+      this.url + `reviews/${postId}/delete/${reviewId}/${userId}`
     );
   }
 }
