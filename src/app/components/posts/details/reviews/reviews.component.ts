@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Review } from '../../../../interfaces/Reviews';
 import { CommonModule } from '@angular/common';
+import { ReviewService } from '../../../../services/review/review.service';
 
 @Component({
   selector: 'app-reviews',
@@ -11,10 +12,15 @@ import { CommonModule } from '@angular/common';
 })
 export class ReviewsComponent {
   @Input() reviews: Review[] = [];
-  userPicture: string = 'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020658/samples/bike.jpg';
+  @Output() reviewIdChange = new EventEmitter<string>();
+  public userPicture: string =
+    'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020658/samples/bike.jpg';
   userName: string = 'John Doe';
 
-  constructor() {}
+  public review: Review | any = {};
+  isEditing: boolean = false;
+
+  constructor(private reviewService: ReviewService) {}
 
   likeReview(reviewId: string) {
     console.log(reviewId);
@@ -24,8 +30,13 @@ export class ReviewsComponent {
     console.log(reviewId);
   }
 
-  editReview(reviewId: string) {
+  getReview(reviewId: string) {
     console.log(reviewId);
+  }
+
+  editReview(reviewId: string) {
+    if (reviewId === undefined) return;
+    this.reviewIdChange.emit(reviewId);
   }
 
   deleteReview(reviewId: string) {
