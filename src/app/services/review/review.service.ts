@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { PostResponse } from '../../interfaces/Post';
 import { Observable } from 'rxjs';
 import { ReviewInterfaceResponse } from '../../interfaces/Reviews';
 
@@ -9,7 +8,7 @@ type Review = {
   body: string;
   authorId: string;
 };
-interface createReview {
+interface ReviewResponse {
   data: string;
   message: string;
   status: string;
@@ -29,25 +28,25 @@ export class ReviewService {
   }
 
   createReview(postId: string, review: Review) {
-    return this.http.post<createReview>(
+    return this.http.post<ReviewResponse>(
       this.url + `reviews/create/${postId}`,
       review
     );
   }
 
   getReviewById(id: string) {
-    return this.http.get<Review>(this.url + `reviews/review/${id}`);
+    return this.http.get<ReviewResponse>(this.url + `reviews/review/${id}`);
   }
 
   editReview(postId: string, reviewId: string, userId: string, review: Review) {
-    return this.http.put<createReview>(
+    return this.http.put<ReviewResponse>(
       this.url + `reviews/${postId}/update/${reviewId}/${userId}`,
       review
     );
   }
 
   deleteReview(postId: string, reviewId: string, userId: string) {
-    return this.http.delete<createReview>(
+    return this.http.delete<ReviewResponse>(
       this.url + `reviews/${postId}/delete/${reviewId}/${userId}`
     );
   }
