@@ -30,9 +30,6 @@ export class ReviewsComponent {
     console.log(reviewId);
   }
 
-  getReview(reviewId: string) {
-    console.log(reviewId);
-  }
 
   editReview(reviewId: string) {
     if (reviewId === undefined) return;
