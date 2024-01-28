@@ -47,13 +47,13 @@ export class DetailsComponent implements OnInit {
   private _reviewId: string = '';
 
   @Input()
-  set reviewId(value: string) {
+  set reviewIdToEdit(value: string) {
     this._reviewId = value;
     this.isEditing = true;
     this.getReview();
   }
 
-  get reviewId(): string {
+  get reviewIdToEdit(): string {
     return this._reviewId;
   }
 
@@ -117,6 +117,7 @@ export class DetailsComponent implements OnInit {
 
   loadReviews() {
     if (!this.postId) return;
+    // if (!this.post?.reviewsIds?.length) return;
     this.reviewService.getReviewsByPostId(this.postId).subscribe((reviews) => {
       this.reviews = reviews.data;
       // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
@@ -125,8 +126,8 @@ export class DetailsComponent implements OnInit {
   }
 
   getReview() {
-   if(!this.reviewId) return;
-    this.reviewService.getReviewById(this.reviewId).subscribe({
+    if (!this.reviewIdToEdit) return;
+    this.reviewService.getReviewById(this.reviewIdToEdit).subscribe({
       next: (response) => {
         this.review = response.data;
         this.form.patchValue({
@@ -172,11 +173,11 @@ export class DetailsComponent implements OnInit {
       authorId: '272734628828jd83',
     };
     this.reviewService
-      .editReview(this.postId, this.reviewId, '272734628828jd83', review)
+      .editReview(this.postId, this.reviewIdToEdit, '272734628828jd83', review)
       .subscribe({
         next: (response) => {
           this.form.reset();
-          this.reviewId = '';
+          this.reviewIdToEdit = '';
           this.isEditing = false;
           this.review = {};
           this.reviewService
@@ -195,6 +196,6 @@ export class DetailsComponent implements OnInit {
   }
 
   show(value: string) {
-    this.reviewId = value;
+    this.reviewIdToEdit = value;
   }
 }
