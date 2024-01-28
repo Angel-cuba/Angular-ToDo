@@ -16,6 +16,12 @@ import {
 import { ReviewService } from '../../../services/review/review.service';
 import { Review } from '../../../interfaces/Reviews';
 
+type ReviewResponse = {
+  data: Review;
+  message: string;
+  status: string;
+};
+
 @Component({
   selector: 'app-details',
   standalone: true,
@@ -32,18 +38,18 @@ import { Review } from '../../../interfaces/Reviews';
 })
 export class DetailsComponent implements OnInit {
   //TODO: Cambiar los types any por los tipos correctos
-  public id: string = '';
+  public postId: string = '';
   public post: Post | any = {};
   public reviews: Review[] = [];
   public isEditing: boolean = false;
-  public review: Review | any = {};
+  public review: ReviewResponse | any = {};
 
   private _reviewId: string = '';
 
   @Input()
   set reviewId(value: string) {
     this._reviewId = value;
-    this.isEditing = true
+    this.isEditing = true;
     this.getReview();
   }
 
@@ -71,18 +77,22 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.id = params['id'];
+      this.postId = params['id'];
 
       // Hacer el primer fetch para obtener la información del post
-      this.postService.getPostById(this.id).subscribe((post) => {
-        this.post = post.data;
-        // Llamada a la función que procesa el post (por ejemplo, mostrar un modal)
-        this.processPost();
+      this.postService.getPostById(this.postId).subscribe({
+        next: (response) => {
+          this.post = response.data;
+          this.processPost();
 
-        // Hacer el segundo fetch para obtener las reviews basadas en el ID del post
-        if (this.post?.reviewIds?.length > 0) {
-          this.loadReviews();
-        }
+          // Hacer el segundo fetch para obtener las reviews basadas en el ID del post
+          if (this.post?.reviewIds?.length > 0) {
+            this.loadReviews();
+          }
+        },
+        error: (error) => {
+          this.toaster.error('Error loading post', 'Error');
+        },
       });
     });
   }
@@ -106,7 +116,8 @@ export class DetailsComponent implements OnInit {
   }
 
   loadReviews() {
-    this.reviewService.getReviewsByPostId(this.id).subscribe((reviews) => {
+    if (!this.postId) return;
+    this.reviewService.getReviewsByPostId(this.postId).subscribe((reviews) => {
       this.reviews = reviews.data;
       // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
       this.processReviews(reviews?.data?.length);
@@ -114,9 +125,17 @@ export class DetailsComponent implements OnInit {
   }
 
   getReview() {
-    this.reviewService.getReviewById(this.reviewId).subscribe((review) => {
-      console.log("🚀 ~ DetailsComponent ~ this.reviewService.getReviewById ~ review:", review)
-      this.review = review.data;
+   if(!this.reviewId) return;
+    this.reviewService.getReviewById(this.reviewId).subscribe({
+      next: (response) => {
+        this.review = response.data;
+        this.form.patchValue({
+          body: this.review.body,
+        });
+      },
+      error: (error) => {
+        this.toaster.error('Error loading review', 'Error');
+      },
     });
   }
 
@@ -128,21 +147,47 @@ export class DetailsComponent implements OnInit {
       body: this.form.value.body,
       authorId: '272734628828jd83',
     };
-
     // Llamada a la función que guarda la review
-    this.reviewService.createReview(this.id, review).subscribe({
+    this.reviewService.createReview(this.postId, review).subscribe({
       next: (response) => {
+        this.form.reset();
         // Llamada a la función que carga las reviews
         this.reviewService
-          .getReviewsByPostId(this.id)
+          .getReviewsByPostId(this.postId)
           .subscribe((reviews) => (this.reviews = reviews.data));
-        this.toaster.success('Review created successfully!', 'Success');
+        this.toaster.success(response.message, 'Success');
       },
       error: (error) => {
         this.toaster.error('Error creating review', 'Error');
       },
     });
-    this.form.reset();
+  }
+
+  editReview() {
+    if (!this.form.valid) {
+      return;
+    }
+    const review = {
+      body: this.form.value.body,
+      authorId: '272734628828jd83',
+    };
+    this.reviewService
+      .editReview(this.postId, this.reviewId, '272734628828jd83', review)
+      .subscribe({
+        next: (response) => {
+          this.form.reset();
+          this.reviewId = '';
+          this.isEditing = false;
+          this.review = {};
+          this.reviewService
+            .getReviewsByPostId(this.postId)
+            .subscribe((reviews) => (this.reviews = reviews.data));
+          this.toaster.success(response.message, 'Success');
+        },
+        error: (error) => {
+          this.toaster.error('Error editing review', 'Error');
+        },
+      });
   }
 
   goBack() {
@@ -152,5 +197,4 @@ export class DetailsComponent implements OnInit {
   show(value: string) {
     this.reviewId = value;
   }
-
 }
