@@ -9,7 +9,7 @@ type Review = {
   authorId: string;
 };
 interface ReviewResponse {
-  data: string;
+  data: Review;
   message: string;
   status: string;
 }
@@ -34,18 +34,18 @@ export class ReviewService {
     );
   }
 
-  getReviewById(id: string) {
+  getReviewById(id: string): Observable<ReviewResponse>  {
     return this.http.get<ReviewResponse>(this.url + `reviews/review/${id}`);
   }
 
-  editReview(postId: string, reviewId: string, userId: string, review: Review) {
+  editReview(postId: string, reviewId: string, userId: string, review: Review): Observable<ReviewResponse> {
     return this.http.put<ReviewResponse>(
       this.url + `reviews/${postId}/update/${reviewId}/${userId}`,
       review
     );
   }
 
-  deleteReview(postId: string, reviewId: string, userId: string) {
+  deleteReview(postId: string, reviewId: string, userId: string): Observable<ReviewResponse>{
     return this.http.delete<ReviewResponse>(
       this.url + `reviews/${postId}/delete/${reviewId}/${userId}`
     );
