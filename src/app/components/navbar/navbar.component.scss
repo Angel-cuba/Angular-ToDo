@@ -33,6 +33,16 @@
         cursor: pointer;
       }
     }
+     &--item-profile {
+      list-style: none;
+      text-decoration: none;
+      font-weight: 700;
+      margin-right: 1rem;
+      transition: all 0.1s ease-in-out;
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
     &--btn {
       color: #ff0000;
       font-weight: 800;
@@ -96,12 +106,17 @@
       }
     }
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (width < 768px) {
     &__items {
       display: none;
     }
     &__mobile-menu {
       display: block;
+    }
+  }
+  @media screen and (width > 768px){
+    &__mobile-menu {
+      display: none;
     }
   }
 }
