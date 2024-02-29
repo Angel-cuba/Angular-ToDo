@@ -27,6 +27,7 @@ export class NavbarComponent {
   public loginView: boolean = true;
   public registerView: boolean = false;
   public isUserLogged: boolean = false;
+  public token: string | null = localStorage.getItem('token') as string;
 
   constructor(
     private router: Router,
@@ -70,7 +71,6 @@ export class NavbarComponent {
         email: 'user2@gmail.com',
         password: '123456',
       };
-      // if (this.loginView) {
       this.authService.login(user).subscribe((result: LoginResponse) => {
         console.log(
           '🚀 ~ NavbarComponent ~ this.authService.login ~ result:',
@@ -110,11 +110,10 @@ export class NavbarComponent {
   }
 
   goToProfile() {
-    const checkToken = this.authService.checkAuth();
-    if (!checkToken) {
+    if (!this.isUserLogged && !this.token) {
       this.toast.error(
         'You need to be logged in to access to your profile',
-        'Error'
+        'We need to know who you are!!!',
       );
       return;
     }

@@ -8,7 +8,6 @@
     }
     <div class="navbar__items--item-profile" style="font-size: 5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer;" [ngStyle]="{ 'color' : isUserLogged ? '#2E2E2E' : '#555252', 'box-shadow' : isUserLogged ? '0 0 2px 0 #d3d3d3' : '0 0 2px 0 #FF0000'}" (click)="goToProfile()">
       <mat-icon aria-modal="true" mat-raised-button style="border-radius: 50%; margin: 2px" [ngStyle]="{'box-shadow': isUserLogged ? '0 0 5px 0 #3F3A3A' : '0 0 10px 0 #FF000011'}">person</mat-icon>
-      <!-- <mat-icon aria-modal="true" mat-raised-button color="black">person</mat-icon> -->
     </div>
     <button mat-raised-button color="warn" (click)="loginUser()">
       <span class="navbar__items--btn">{{isUserLogged ? 'Log Out' : 'Login'}}</span>
