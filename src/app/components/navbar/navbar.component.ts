@@ -6,7 +6,7 @@ import { SmallTitleComponent } from '../content/small-title/small-title.componen
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth/auth.service';
-import { LoginResponse } from '../../interfaces/User';
+import { LoginResponse, newUser } from '../../interfaces/User';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -84,8 +84,7 @@ export class NavbarComponent {
   }
 
   registerUser() {
-    console.log('register');
-    const user = {
+    const user: newUser = {
       email: 'user11@gmail.com',
       username: 'toto',
       password: '123456',
