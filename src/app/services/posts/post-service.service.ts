@@ -10,12 +10,13 @@ type createPost = {
   authorId: string;
   image: string;
   tags: string;
-}
+};
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
   url: string = environment.localUrl;
+
 
   constructor(private http: HttpClient) {
     this.loadPosts();
@@ -30,18 +31,34 @@ export class PostService {
   }
 
   getPostById(id: string): Observable<PostByIdResponse> {
-    return this.http.get<PostByIdResponse>(this.url + 'posts/' + id);
+    return this.http.get<PostByIdResponse>(this.url + `posts/${id}`);
   }
 
   createPost(post: createPost): Observable<PostResponse> {
     return this.http.post<PostResponse>(this.url + 'posts/create', post);
   }
 
-  editPost(postId: string, post: Post, userId: string): Observable<PostResponse> {
-    return this.http.put<PostResponse>(this.url + `posts/${postId}/update/${userId}`, post);
+  likeOrDislikePost(postId: string, userId: string): Observable<PostResponse> {
+    return this.http.post<PostResponse>(
+      this.url + `posts/${postId}/like/${userId}`,
+      {}
+    );
+  }
+
+  editPost(
+    postId: string,
+    post: Post,
+    userId: string
+  ): Observable<PostResponse> {
+    return this.http.put<PostResponse>(
+      this.url + `posts/${postId}/update/${userId}`,
+      post
+    );
   }
 
   deletePost(postId: string, userId: string): Observable<PostResponse> {
-    return this.http.delete<PostResponse>(this.url + `posts/${postId}/delete/${userId}`);
+    return this.http.delete<PostResponse>(
+      this.url + `posts/${postId}/delete/${userId}`
+    );
   }
 }
