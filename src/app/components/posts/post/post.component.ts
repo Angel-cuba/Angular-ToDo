@@ -70,8 +70,8 @@ export class PostComponent {
   }
 
   checkIfUserLikedPost() {
-    const listOfUsers = this.post.likes;
-    if (listOfUsers?.length > 0 && listOfUsers !== undefined) {
+    const listOfUserLikes = this.post.likes;
+    if (listOfUserLikes?.length > 0 && listOfUserLikes !== undefined) {
       const checkUser = this.post.likes.includes(this.userId);
       if (checkUser) {
         this.liked = true;
