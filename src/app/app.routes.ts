@@ -8,6 +8,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { TodoComponent } from './components/todo/todo.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DetailsComponent } from './components/posts/details/details.component';
+import { AuthGuard } from './guards/auth-guards';
 
 export const routes: Routes = [
   {
@@ -20,35 +21,38 @@ export const routes: Routes = [
       },
       {
         path: 'home/post/:id',
-        component: DetailsComponent
+        component: DetailsComponent,
       },
       {
         path: 'home/create',
-        component: FormComponent
+        component: FormComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'home/edit/:id',
-       component: FormComponent
+        component: FormComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'view/:id',
-        component: PostComponent
+        component: PostComponent,
       },
       {
         path: 'about',
-        component: AboutComponent
+        component: AboutComponent,
       },
       {
         path: 'contact',
-        component: ContactComponent
+        component: ContactComponent,
       },
       {
         path: 'activity',
-        component: TodoComponent
+        component: TodoComponent,
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: '',
