@@ -1,1 +1,85 @@
-<p>signin works!</p>
+<div class="container">
+  <div class="container__form">
+    @if(isLogin) {
+    <app-big-title title="Login"></app-big-title>
+    } @else {
+    <app-big-title title="Register"></app-big-title>
+    }
+    <form action="" method="post" (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+      <div>
+        <label for="name">Email: </label>
+        <input type="email" id="email" name="email" formControlName="email"
+          [placeholder]="['Email']">
+        <span
+          *ngIf="this.loginForm.controls['email'].getError('required') && loginForm.touched">Field
+          required!</span>
+        <span *ngIf="loginForm.controls['email'].getError('pattern')">Email not valid</span>
+      </div>
+      <div>
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" formControlName="username"
+          [placeholder]="['Username']">
+        <span *ngIf="loginForm.controls['username'].getError('minlength')">Minimum of 3</span>
+        <span class="container__form__input--error"
+          *ngIf="loginForm.controls['username'].getError('maxlength')">Maximum of 20</span>
+      </div>
+      <div>
+        <label for="password">Password: </label>
+        <input type="{{!showPassword ? 'password': 'text' }}" id="password" name="password"
+          formControlName="password" [placeholder]="['Password']">
+        <span
+          *ngIf="this.loginForm.controls['password'].getError('required') && loginForm.touched">Field
+          required!</span>
+        <span *ngIf="loginForm.controls['password'].getError('minlength')">Minimum of 8</span>
+        <span class="container__form__input--error"
+          *ngIf="loginForm.controls['password'].getError('maxlength')">Maximum of 20</span>
+      </div>
+      <div>
+        <label for="confirmPassword">Confirm Password: </label>
+        <input type="{{!showPassword ? 'password': 'text' }}" id="confirmPassword"
+          name="confirmPassword" formControlName="confirmPassword"
+          [placeholder]="['Confirm Password']">
+        <span
+          *ngIf="loginForm.controls['confirmPassword'].getError('required') && loginForm.touched">Field
+          required!</span>
+        <span *ngIf="loginForm.controls['confirmPassword'].getError('minlength')">Minimum of
+          8</span>
+        <span class="container__form__input--error"
+          *ngIf="loginForm.controls['confirmPassword'].getError('maxlength')">Maximum of 20</span>
+        <span *ngIf="loginForm.controls['confirmPassword'].getError('passwordMatch')">Passwords do
+          not
+          match</span>
+      </div>
+      <div>
+        <label for="image">Image: </label>
+        <input type="text" id="image" name="image" formControlName="image"
+          [placeholder]="['Image']">
+        <span
+          *ngIf="this.loginForm.controls['image'].getError('pattern') && loginForm.touched">Invalid
+          image address!</span>
+      </div>
+      <div>
+        <label for="bio">Bio: </label>
+        <input type="text" id="bio" name="bio" formControlName="bio" [placeholder]="['Bio']">
+        <span *ngIf="loginForm.controls['bio'].getError('minlength')">Minimum of 3</span>
+        <span *ngIf="loginForm.controls['bio'].getError('maxlength')">Maximum of 50</span>
+      </div>
+      <div>
+        <label for="github">GitHub: </label>
+        <input type="text" id="github" name="github" formControlName="github"
+          [placeholder]="['GitHub']">
+        <span *ngIf="loginForm.controls['github'].getError('pattern')">Address invalid</span>
+      </div>
+      <div>
+        <label for="linkedin">LinkedIn: </label>
+        <input type="text" id="linkedin" name="linkedin" formControlName="linkedin"
+          [placeholder]="['LinkedIn']">
+        <span *ngIf="loginForm.controls['linkedin'].getError('pattern')">Address invalid</span>
+      </div>
+      <button type="submit">{{ isLogin ? 'Login' : 'Register'}}</button>
+    </form>
+  </div>
+  <button (click)="switchLogin()">{{ isLogin ? 'Switch to Register' : 'Switch to Login' }}</button>
+  <button (click)="show()" class="container__close-modal">Close</button>
+
+</div>
