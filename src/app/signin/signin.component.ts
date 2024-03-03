@@ -86,6 +86,11 @@ export class SigninComponent {
     }
     if (this.isLogin) {
       console.log('login');
+      const user = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
+      };
+      console.log(user);
     } else {
       console.log('register');
       if (this.loginForm.value.password !== this.loginForm.value.confirmPassword) {

@@ -5,7 +5,7 @@
     } @else {
     <app-big-title title="Register"></app-big-title>
     }
-    <form action="" method="post" (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+    <form action="" method="post" (ngSubmit)="handleSubmit()" [formGroup]="loginForm" [ngStyle]="{'margin-top': isLogin ? '5rem' : '2rem'}">
       <div>
         <label for="name">Email: </label>
         <input type="email" id="email" name="email" formControlName="email"
@@ -15,6 +15,7 @@
           required!</span>
         <span *ngIf="loginForm.controls['email'].getError('pattern')">Email not valid</span>
       </div>
+      @if(!isLogin) {
       <div>
         <label for="username">Username: </label>
         <input type="text" id="username" name="username" formControlName="username"
@@ -23,6 +24,7 @@
         <span class="container__form__input--error"
           *ngIf="loginForm.controls['username'].getError('maxlength')">Maximum of 20</span>
       </div>
+      }
       <div>
         <label for="password">Password: </label>
         <input type="{{!showPassword ? 'password': 'text' }}" id="password" name="password"
@@ -34,6 +36,7 @@
         <span class="container__form__input--error"
           *ngIf="loginForm.controls['password'].getError('maxlength')">Maximum of 20</span>
       </div>
+      @if(!isLogin) {
       <div>
         <label for="confirmPassword">Confirm Password: </label>
         <input type="{{!showPassword ? 'password': 'text' }}" id="confirmPassword"
@@ -76,10 +79,10 @@
           [placeholder]="['LinkedIn']">
         <span *ngIf="loginForm.controls['linkedin'].getError('pattern')">Address invalid</span>
       </div>
+      }
       <button type="submit">{{ isLogin ? 'Login' : 'Register'}}</button>
     </form>
   </div>
   <button (click)="switchLogin()">{{ isLogin ? 'Switch to Register' : 'Switch to Login' }}</button>
   <button (click)="show()" class="container__close-modal">Close</button>
-
 </div>
