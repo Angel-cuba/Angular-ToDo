@@ -24,8 +24,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent {
   public openMenu: boolean = false;
-  public loginView: boolean = true;
-  public registerView: boolean = false;
   public isUserLogged: boolean = false;
   public token: string | null = localStorage.getItem('token') as string;
 
@@ -33,9 +31,7 @@ export class NavbarComponent {
     private router: Router,
     private authService: AuthService,
     private toast: ToastrService
-  ) {
-    console.log(this.loginView);
-  }
+  ) {}
 
   public navItems: any = routes
     .map((route) => route.children ?? [])
@@ -43,10 +39,15 @@ export class NavbarComponent {
     .filter((route) => route.path !== '')
     .filter((route) => !route.path?.includes(':'))
     .filter((route) => !route.path?.includes('create'))
-    .filter((route) => !route.path?.includes('profile'));
+    .filter((route) => !route.path?.includes('profile'))
+    .filter((route) => !route.path?.includes('login'));
 
   ngOnInit(): void {
     this.isUserLogged = this.authService.checkAuth();
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['hero/login']);
   }
 
   public toggleMenu(): void {
@@ -55,11 +56,6 @@ export class NavbarComponent {
 
   closeMenu(): void {
     this.openMenu = false;
-  }
-
-  public navigateTo(path: string): void {
-    this.router.navigate([path]);
-    this.closeMenu();
   }
 
   loginUser() {
@@ -103,16 +99,11 @@ export class NavbarComponent {
     });
   }
 
-  toggleLoginView(): void {
-    this.loginView = !this.loginView;
-    this.registerView = !this.registerView;
-  }
-
   goToProfile() {
     if (!this.isUserLogged && !this.token) {
       this.toast.error(
         'You need to be logged in to access to your profile',
-        'We need to know who you are!!!',
+        'We need to know who you are!'
       );
       return;
     }
