@@ -5,7 +5,8 @@
     } @else {
     <app-big-title title="Register"></app-big-title>
     }
-    <form action="" method="post" (ngSubmit)="handleSubmit()" [formGroup]="loginForm" [ngStyle]="{'margin-top': isLogin ? '5rem' : '2rem'}">
+    <form action="" method="post" (ngSubmit)="handleSubmit()" [formGroup]="loginForm"
+      [ngStyle]="{'margin-top': isLogin ? '5rem' : '2rem'}">
       <div>
         <label for="name">Email: </label>
         <input type="email" id="email" name="email" formControlName="email"
@@ -82,7 +83,15 @@
       }
       <button type="submit">{{ isLogin ? 'Login' : 'Register'}}</button>
     </form>
+    <div class="container__form__switching">
+      <p class="container__form__switching__question">
+        {{ isLogin ? "Don't you have an account yet?" : 'Do you have an account already?' }}
+      </p>
+      &nbsp;
+      <p class="container__form__switching__link" (click)="switchLogin()">
+        {{ isLogin ? ' Just go here to make a fresh account' : 'Just go here to login'
+        }}.</p>
+    </div>
+
   </div>
-  <button (click)="switchLogin()">{{ isLogin ? 'Switch to Register' : 'Switch to Login' }}</button>
-  <button (click)="show()" class="container__close-modal">Close</button>
 </div>
