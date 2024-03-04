@@ -4,9 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   &__form {
-    width: 98%;
+    width: 100%;
     height: 100%;
     form {
       width: 100%;
@@ -37,9 +36,32 @@
             box-shadow: 0 0 5px 0 rgba(255, 0, 0, 0.2);
           }
         }
+        textarea {
+          width: 70%;
+          height: 5rem;
+          margin: 0.5rem 0;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          transition: all 0.1s ease-in-out;
+          &:focus {
+            border: 1px solid #ff0000;
+            box-shadow: 0 0 5px 0 rgba(255, 0, 0, 0.2);
+          }
+        }
         span {
           font-weight: 600;
           color: #ff0000;
+        }
+        @media screen and (width < 768px){
+          width: 100%;
+          flex-direction: column;
+          label {
+            width: 87%;
+          }
+          input, textarea {
+            width: 90%;
+          }
         }
       }
       button {
@@ -61,6 +83,19 @@
         }
       }
     }
+    @media screen and (width > 768px) {
+      width: 90%;  
+          margin: 0 auto;
+    }
+    @media screen and (width > 830px) {
+      width: 80%;  
+    }
+    @media screen and (width > 900px) {
+      width: 70%;  
+    }
+    @media screen and (width > 990px) {
+      width: 60%;  
+    }
     &__switching {
       display: flex;
       justify-content: center;
@@ -76,6 +111,12 @@
         cursor: pointer;
         &:hover {
           text-decoration: underline;
+        }
+      }
+      @media screen and (width < 768px){
+        flex-direction: column;
+        &--spacer {
+          display: none;
         }
       }
     }
