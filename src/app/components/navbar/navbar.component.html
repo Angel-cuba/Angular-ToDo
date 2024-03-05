@@ -6,8 +6,13 @@
       {{ (item.path)?.slice(0, 1)?.toUpperCase() + (item.path)?.slice(1) }}
     </a>
     }
-    <div class="navbar__items--item-profile" style="font-size: 5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer;" [ngStyle]="{ 'color' : isUserLogged ? '#2E2E2E' : '#555252', 'box-shadow' : isUserLogged ? '0 0 2px 0 #d3d3d3' : '0 0 2px 0 #FF0000'}" (click)="goToProfile()">
-      <mat-icon aria-modal="true" mat-raised-button style="border-radius: 50%; margin: 2px" [ngStyle]="{'box-shadow': isUserLogged ? '0 0 5px 0 #3F3A3A' : '0 0 10px 0 #FF000011'}">person</mat-icon>
+    <div class="navbar__items--item-profile" (click)="goToProfile()">
+      @if(isUserLogged) {
+      <img src="{{ userImage }}" alt="" style="width: 100%; height: 100%;">}
+      @else {
+      <mat-icon aria-modal="true" mat-raised-button style="border-radius: 50%; margin: 2px"
+        style="box-shadow: 0 0 5px 0 #3F3A3A;">person</mat-icon>
+      }
     </div>
     <button mat-raised-button color="warn" (click)="goToLogin()">
       <span class="navbar__items--btn">{{isUserLogged ? 'Log Out' : 'Login'}}</span>
@@ -23,7 +28,7 @@
       {{ (item.path)?.slice(0, 1)?.toUpperCase() + (item.path)?.slice(1) }}
     </a>
     }
-    <button mat-raised-button color="accent" (click)="loginUser()">
+    <button mat-raised-button color="accent" (click)="goToLogin()">
       <span class="navbar__mobile-menu--items--btn">{{isUserLogged ? 'Log Out' : 'Login'}}</span>
     </button>
   </div>
