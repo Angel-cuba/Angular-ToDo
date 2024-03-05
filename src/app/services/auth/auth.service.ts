@@ -1,34 +1,66 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
-import { LoginResponse, User, newUser } from '../../interfaces/User';
+import { BehaviorSubject, Observable } from 'rxjs';
+import {  User, newUser } from '../../interfaces/User';
 import { Router } from '@angular/router';
-
+import { UserInLocalStorage } from './session';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   url: string = environment.localUrl;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  isAuthenticated: BehaviorSubject<UserInLocalStorage> =
+    new BehaviorSubject<UserInLocalStorage>(new UserInLocalStorage());
 
-  login(user: User): Observable<LoginResponse> {   
-    return this.http.post<LoginResponse>(this.url + 'users/signin',user);
+  constructor(private http: HttpClient, private router: Router) {
+    this.verifyAuthentication();
   }
 
-  register(user: newUser) {
-    return this.http.post(this.url + 'users/create', user);
+  login(user: User): Observable<UserInLocalStorage> {
+    return this.http.post<UserInLocalStorage>(this.url + 'users/signin', user);
   }
 
-  checkAuth() {
-   const token = localStorage.getItem('token');
-   if(!token) {
-      this.router.navigate(['/hero']);
+  register(user: newUser): Observable<UserInLocalStorage> {
+    return this.http.post<UserInLocalStorage>(this.url + 'users/create', user);
+  }
+
+  verifyAuthentication() {
+    const isActive = localStorage.getItem('session');
+    if (isActive) {
+      let userData: UserInLocalStorage = JSON.parse(isActive);
+      userData.isLoggedIn = true;
+      this.refreshSession(userData);
+    }
+  }
+
+  refreshSession(response: UserInLocalStorage) {
+    this.isAuthenticated.next(response);
+  }
+
+  getSessionStatus() {
+    return this.isAuthenticated.asObservable();
+  }
+
+  saveSession(response: UserInLocalStorage): boolean {
+    const token = localStorage.getItem('session');
+    if (token) {
       return false;
-   }
+    }
+    let user = JSON.stringify(response);
+    localStorage.setItem('session', user);
     return true;
+  }
+
+  getToken(): string {
+    let token = localStorage.getItem('session');
+    if (token) {
+      let data = JSON.parse(token);
+      return data.token;
+    }
+    return '';
   }
 
   logout() {
