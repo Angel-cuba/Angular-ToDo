@@ -8,10 +8,10 @@
     }
     <div class="navbar__items--item-profile" (click)="goToProfile()">
       @if(isUserLogged) {
-      <img src="{{ userImage }}" alt="" style="width: 100%; height: 100%;">}
+      <img [src]="getUserImage()" alt="" style="width: 100%; height: 100%;">}
       @else {
-      <mat-icon aria-modal="true" mat-raised-button style="border-radius: 50%; margin: 2px"
-        style="box-shadow: 0 0 5px 0 #3F3A3A;">person</mat-icon>
+      <mat-icon aria-modal="true" mat-raised-button
+        style="border-radius: 50%; box-shadow: 0 0 5px 0 #3F3A3A; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 2rem;">person</mat-icon>
       }
     </div>
     <button mat-raised-button color="warn" (click)="goToLogin()">

@@ -6,7 +6,6 @@ import { SmallTitleComponent } from '../content/small-title/small-title.componen
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth/auth.service';
-import {  newUser } from '../../interfaces/User';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { UserInLocalStorage } from '../../services/auth/session';
@@ -28,6 +27,8 @@ export class NavbarComponent implements OnInit {
   public openMenu: boolean = false;
   public isUserLogged: boolean = false;
   public userImage: string | undefined = '';
+  public defaultImage: string =
+    'https://res.cloudinary.com/dqaerysgb/image/upload/v1648218398/istockphoto-1132926013-612x612_t1xwec.jpg';
   public subscription: Subscription = new Subscription();
 
   constructor(
@@ -61,6 +62,7 @@ export class NavbarComponent implements OnInit {
     if (this.isUserLogged) {
       this.authService.logout();
       this.isUserLogged = false;
+      this.router.navigate(['hero/login']);
     } else {
       this.router.navigate(['hero/login']);
     }
@@ -92,5 +94,10 @@ export class NavbarComponent implements OnInit {
       const sessionData = JSON.parse(session);
       this.userImage = sessionData.data.user.image;
     }
+  }
+
+//TODO: Use later this method to handle image veracity
+  getUserImage() {
+    return this.userImage ? this.userImage : this.defaultImage;
   }
 }
