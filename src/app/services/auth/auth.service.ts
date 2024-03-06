@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {  User, newUser } from '../../interfaces/User';
+import { User, newUser } from '../../interfaces/User';
 import { Router } from '@angular/router';
 import { UserInLocalStorage } from './session';
 
@@ -55,10 +55,10 @@ export class AuthService {
   }
 
   getToken(): string {
-    let token = localStorage.getItem('session');
-    if (token) {
-      let data = JSON.parse(token);
-      return data.token;
+    let userSession = localStorage.getItem('session');
+    if (userSession) {
+      let result = JSON.parse(userSession);
+      return result.data.token;
     }
     return '';
   }
