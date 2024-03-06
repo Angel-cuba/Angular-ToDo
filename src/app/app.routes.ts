@@ -9,6 +9,7 @@ import { TodoComponent } from './components/todo/todo.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DetailsComponent } from './components/posts/details/details.component';
 import { AuthGuard } from './guards/auth-guards';
+import { SigninComponent } from './signin/signin.component';
 
 export const routes: Routes = [
   {
@@ -53,6 +54,10 @@ export const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
         canActivate: [AuthGuard],
+      },
+      {
+        path: 'login',
+        component: SigninComponent
       },
       {
         path: '',
