@@ -23,6 +23,7 @@
       width: 100%;
       height: 35%;
       &--input {
+        position: relative;
         width: 100%;
         margin-top: 1rem;
         &__label {
@@ -62,6 +63,9 @@
           }
         }
         &__error {
+          position: absolute;
+          bottom: 10px;
+          left: 30px;
           color: red;
           font-size: 0.9rem;
           margin-top: 5px;
@@ -114,7 +118,7 @@
     &__content {
       width: 100%;
       height: 65%;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       overflow-y: auto;
       scroll-behavior: smooth;
       &::-webkit-scrollbar {
@@ -133,75 +137,23 @@
       &::-webkit-scrollbar-thumb:hover {
         background-color: #ffffff;
       }
-      &--item {
+      &--reviews {
+        margin-top: 0.7rem;
+      }
+      &--loading-message {
         width: 100%;
-        height: 100%;
+        margin-top: 3rem;
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 10px;
-        border-bottom: 1px solid #d3d3d3;
-        &--user {
-          width: 20%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          &--img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-            }
-          }
-        }
-        &--content {
-          width: 70%;
-          height: 100%;
-          display: flex;
-          justify-content: flex-start;
-          align-items: flex-start;
-          flex-direction: column;
-          &--name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-          &--text {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-          &--date {
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-        }
-        &--delete {
-          width: 10%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          svg {
-            transition: all 0.2s ease-in-out;
-            background-color: transparent !important;
-            &:hover {
-              color: #ff0000;
-              transform: scale(1.2);
-            }
-          }
-        }
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #424242;
       }
     }
     &--empty-box {
       width: 100%;
-      margin-top: 2rem;
+      margin-top: 3rem;
       display: flex;
       justify-content: center;
       align-items: center;
