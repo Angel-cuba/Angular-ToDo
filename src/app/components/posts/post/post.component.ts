@@ -34,11 +34,9 @@ export class PostComponent implements OnInit {
   @Input() post: Post | any;
   public id: string = '';
   public liked: boolean = false;
-  public userId: string = '272734628828jd84';
+  public userId: string = '';
   public isLoggedIn: boolean = false;
   public subscription: Subscription = new Subscription();
-  postOwnerId: string = '';
-
   public route = inject(ActivatedRoute);
   public postService = inject(PostService);
 
@@ -53,9 +51,9 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkIfUserLikedPost();
     this.checkSessionState();
-    this.getUserId();
+    this.checkIfUserLikedPost();
+    this.userId = this.authService.getUserId();
   }
 
   checkSessionState() {
@@ -70,7 +68,13 @@ export class PostComponent implements OnInit {
   }
 
   likePost(id: string) {
-    if (id === undefined) return;
+    if (!this.isLoggedIn) {
+      this.toaster.error(
+        'You need to be logged in to like a post.',
+        'Login first!'
+      );
+      return;
+    }
     this.liked = !this.liked;
     this.postService.likeOrDislikePost(id, this.userId).subscribe({
       next: (post) => {
@@ -95,6 +99,7 @@ export class PostComponent implements OnInit {
   }
 
   checkIfUserLikedPost() {
+    if (!this.isLoggedIn) return;
     const listOfUserLikes = this.post.likes;
     if (listOfUserLikes?.length > 0 && listOfUserLikes !== undefined) {
       const checkUser = this.post.likes.includes(this.userId);
@@ -113,17 +118,4 @@ export class PostComponent implements OnInit {
     });
   }
 
-//TODO: implement this method to get the user id from the session
-  getUserId() {
-    const session = localStorage.getItem('session');
-    if (session) {
-      const user = JSON.parse(session);
-      console.log(
-        '🚀 ~ PostComponent ~ getUserId ~ userId:',
-        user.data.user.id
-      );
-      this.postOwnerId = user.data.user.id;
-    }
-    return '';
-  }
 }
