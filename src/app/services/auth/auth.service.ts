@@ -63,6 +63,15 @@ export class AuthService {
     return '';
   }
 
+  getUserId(): string {
+    let userSession = localStorage.getItem('session');
+    if (userSession) {
+      let result = JSON.parse(userSession);
+      return result.data.user.id;
+    }
+    return '';
+  }
+
   logout() {
     localStorage.clear();
     this.router.navigate(['/hero/home']);
