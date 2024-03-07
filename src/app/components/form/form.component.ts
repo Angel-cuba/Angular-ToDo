@@ -12,6 +12,7 @@ import { PostService } from '../../services/posts/post-service.service';
 import { Post } from '../../interfaces/Post';
 import { TagComponent } from '../posts/tag/tag.component';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-form',
@@ -32,7 +33,7 @@ export class FormComponent {
   public errorMessage: string = '';
   public id: string = '';
   public postData: Post | any = {};
-  public userId: string = '272734628828jd83';
+  public userId: string = '';
 
   public form: FormGroup = this.formBuilder.group({
     title: [
@@ -57,7 +58,8 @@ export class FormComponent {
     private router: Router,
     private toaster: ToastrService,
     private route: ActivatedRoute,
-    private post: PostService
+    private post: PostService,
+    private authService: AuthService
   ) {
     this.route.params.subscribe((params) => {
       const postId = params['id'];
@@ -77,6 +79,7 @@ export class FormComponent {
         });
       }
     });
+    this.userId = this.authService.getUserId();
   }
   //TODO: Hacer que cada tag no tenga espacios, ni delante, atrás o en el medio
   processTags(newTags: any) {
