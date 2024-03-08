@@ -48,12 +48,17 @@ export class PostComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
+    this.userId = this.authService.getUserId();
   }
 
   ngOnInit(): void {
+    if (this.isLoggedIn) {
+      this.checkIfUserLikedPost();
+    }
+  }
+
+  ngOnChanges() {
     this.checkSessionState();
-    this.checkIfUserLikedPost();
-    this.userId = this.authService.getUserId();
   }
 
   checkSessionState() {
@@ -62,7 +67,11 @@ export class PostComponent implements OnInit {
         this.isLoggedIn = isAuthenticated.isLoggedIn;
       },
       error: (err: any) => {
-        console.error('🚀 ~ PostComponent ~ checkSessionState ~ error', err);
+        this.isLoggedIn = false;
+        this.toaster.error('Maybe you have to login again!', 'Error', {
+          timeOut: 1500,
+        });
+        this.router.navigate(['hero/login']);
       },
     });
   }
@@ -75,13 +84,14 @@ export class PostComponent implements OnInit {
       );
       return;
     }
+
     this.liked = !this.liked;
-    this.postService.likeOrDislikePost(id, this.userId).subscribe({
+    // Call the methods to get the user id and token
+    const userId = this.authService.getUserId();
+    const token = this.authService.getToken();
+
+    this.postService.likeOrDislikePost(id, userId, token).subscribe({
       next: (post) => {
-        console.log(
-          '🚀 ~ PostComponent ~ this.postService.likeOrDislikePost ~ post:',
-          post
-        );
         // update the post with the new like
         this.post = post.data;
         this.toaster.success(`${post.message}`, `${post.status}`, {
@@ -89,7 +99,16 @@ export class PostComponent implements OnInit {
         });
       },
       error: (error) => {
-        console.error('🚀 ~ PostComponent ~ likePost ~ error', error);
+        if (this.liked) {
+          this.toaster.error('Error liking post', 'Error', {
+            timeOut: 1500,
+          });
+        } else {
+          this.toaster.error('Error disliking post', 'Error', {
+            timeOut: 1500,
+          });
+        }
+        this.liked = !this.liked;
       },
     });
   }
@@ -101,8 +120,9 @@ export class PostComponent implements OnInit {
   checkIfUserLikedPost() {
     if (!this.isLoggedIn) return;
     const listOfUserLikes = this.post.likes;
+    const userId = this.authService.getUserId();
     if (listOfUserLikes?.length > 0 && listOfUserLikes !== undefined) {
-      const checkUser = this.post.likes.includes(this.userId);
+      const checkUser = this.post.likes.includes(userId);
       if (checkUser) {
         this.liked = true;
       }
@@ -111,11 +131,20 @@ export class PostComponent implements OnInit {
 
   deletePost(id: string | undefined) {
     if (id === undefined) return;
-    this.postService.deletePost(id, this.userId).subscribe((post) => {
-      //TODO: handle error here and respond with a toaster
-      console.log('🚀 ~ PostComponent ~ deletePost ~ post', post);
-      this.router.navigate(['hero/home']);
+    const userId = this.authService.getUserId();
+    const token = this.authService.getToken();
+    this.postService.deletePost(id, userId, token).subscribe({
+      next: (response) => {
+        this.toaster.success(response.message, 'Success', {
+          timeOut: 1500,
+        });
+        this.router.navigate(['hero/home']);
+      },
+      error: (error) => {
+        this.toaster.error('Error deleting post', 'Error', {
+          timeOut: 1500,
+        });
+      },
     });
   }
-
 }
