@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Post, PostByIdResponse, PostResponse } from '../../interfaces/Post';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
@@ -17,11 +17,9 @@ type createPost = {
 })
 export class PostService {
   url: string = environment.localUrl;
-  token: string = '';
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.loadPosts();
-    this.token = authService.getToken();
   }
 
   loadPosts(): Observable<PostResponse> {
@@ -36,9 +34,9 @@ export class PostService {
     return this.http.get<PostByIdResponse>(this.url + `posts/${id}`);
   }
 
-  createPost(post: createPost): Observable<PostResponse> {
+  createPost(post: createPost, token: string): Observable<PostResponse> {
     const headers = {
-      Authorization: 'Bearer ' + this.token,
+      Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     };
     return this.http.post<PostResponse>(this.url + 'posts/create', post, {
@@ -46,9 +44,9 @@ export class PostService {
     });
   }
 
-  likeOrDislikePost(postId: string, userId: string): Observable<PostResponse> {
+  likeOrDislikePost(postId: string, userId: string, token: string): Observable<PostResponse> {
     const headers = {
-      Authorization: 'Bearer ' + this.token,
+      Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     };
 
@@ -62,10 +60,11 @@ export class PostService {
   editPost(
     postId: string,
     post: Post,
-    userId: string
+    userId: string,
+    token: string
   ): Observable<PostResponse> {
     const headers = {
-      Authorization: 'Bearer ' + this.token,
+      Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     };
     return this.http.put<PostResponse>(
@@ -75,9 +74,9 @@ export class PostService {
     );
   }
 
-  deletePost(postId: string, userId: string): Observable<PostResponse> {
+  deletePost(postId: string, userId: string, token: string): Observable<PostResponse> {
     const headers = {
-      Authorization: 'Bearer ' + this.token,
+      Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
     };
     return this.http.delete<PostResponse>(

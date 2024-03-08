@@ -33,7 +33,6 @@ export class FormComponent {
   public errorMessage: string = '';
   public id: string = '';
   public postData: Post | any = {};
-  public userId: string = '';
 
   public form: FormGroup = this.formBuilder.group({
     title: [
@@ -79,7 +78,6 @@ export class FormComponent {
         });
       }
     });
-    this.userId = this.authService.getUserId();
   }
   //TODO: Hacer que cada tag no tenga espacios, ni delante, atrás o en el medio
   processTags(newTags: any) {
@@ -135,16 +133,20 @@ export class FormComponent {
       this.toaster.error('Seems that you have some errors in the form');
       return;
     }
+    // Calling methods to get user id and token
+    const userId = this.authService.getUserId();
+    const token = this.authService.getToken();
+    // Method to handle tags
     const tagsValues = this.processTags(this.form.value.tags);
-    const post: Post | any = {
+    const post = {
       title: this.form.value.title,
       body: this.form.value.body,
       image: this.form.value.image,
       tags: tagsValues,
-      authorId: this.userId,
+      authorId: userId,
     };
     if (this.isEditing) {
-      this.post.editPost(this.id, post, this.userId).subscribe({
+      this.post.editPost(this.id, post, userId, token).subscribe({
         next: (response) => {
           this.toaster.success(response.message);
           this.router.navigate(['hero/home']);
@@ -154,7 +156,7 @@ export class FormComponent {
         },
       });
     } else {
-      this.post.createPost(post).subscribe({
+      this.post.createPost(post, token).subscribe({
         next: (response) => {
           this.toaster.success(response.message);
           this.router.navigate(['hero/home']);
