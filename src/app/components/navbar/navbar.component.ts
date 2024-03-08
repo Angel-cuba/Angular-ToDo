@@ -62,7 +62,6 @@ export class NavbarComponent implements OnInit {
     if (this.isUserLogged) {
       this.authService.logout();
       this.isUserLogged = false;
-      this.router.navigate(['hero/login']);
     } else {
       this.router.navigate(['hero/login']);
     }
