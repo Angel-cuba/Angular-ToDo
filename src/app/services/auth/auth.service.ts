@@ -33,6 +33,8 @@ export class AuthService {
       let userData: UserInLocalStorage = JSON.parse(isActive);
       userData.isLoggedIn = true;
       this.refreshSession(userData);
+    } else {
+      this.isAuthenticated.next(new UserInLocalStorage());
     }
   }
 
@@ -74,6 +76,7 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    this.isAuthenticated.next(new UserInLocalStorage());
     this.router.navigate(['/hero/home']);
   }
 }
