@@ -65,9 +65,11 @@
   <div class="container__post-details">
     <span class="container__post-details--title">{{ form.value.title }}</span>
     <span class="container__post-details--body"> {{ form.value.body }}</span>
-    <img
-      src="{{ !this.form.value.image && !isEditing ? 'https://res.cloudinary.com/dqaerysgb/image/upload/v1648218398/istockphoto-1132926013-612x612_t1xwec.jpg' : this.image }}"
-      alt="">
+    <div class="container__post-details--img">
+      <img
+        src="{{ !this.form.value.image && !isEditing ? 'https://res.cloudinary.com/dqaerysgb/image/upload/v1648218398/istockphoto-1132926013-612x612_t1xwec.jpg' : form.value.image }}"
+        alt="{{form.value.title }}" style="height: 100%; width: 100%; object-fit: contain; object-position: center;">
+    </div>
     @if(tags.length > 0) {
     <div class="container__post-details--tags">
       @for (tag of tags; track $index) {
