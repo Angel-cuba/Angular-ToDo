@@ -15,6 +15,9 @@ import {
 } from '@angular/forms';
 import { ReviewService } from '../../../services/review/review.service';
 import { Review } from '../../../interfaces/Reviews';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../../services/auth/auth.service';
+import { UserInLocalStorage } from '../../../services/auth/session';
 
 type ReviewResponse = {
   data: Review;
@@ -43,6 +46,8 @@ export class DetailsComponent implements OnInit {
   public reviews: Review[] = [];
   public isEditing: boolean = false;
   public review: ReviewResponse | any = {};
+  public subscription: Subscription = new Subscription();
+  public isUserLogged: boolean = false;
 
   private _reviewId: string = '';
 
@@ -72,8 +77,18 @@ export class DetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private postService: PostService,
-    private reviewService: ReviewService
-  ) {}
+    private reviewService: ReviewService,
+    private authService: AuthService
+  ) {
+    this.subscription = this.authService.getSessionStatus().subscribe({
+      next: (response: UserInLocalStorage) => {
+        this.isUserLogged = response.isLoggedIn;
+      },
+      error: (error) => {
+        this.toaster.error('Error verifying authentication', 'Error');
+      },
+    });
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -82,6 +97,10 @@ export class DetailsComponent implements OnInit {
       // Hacer el primer fetch para obtener la información del post
       this.postService.getPostById(this.postId).subscribe({
         next: (response) => {
+          console.log(
+            '🚀 ~ DetailsComponent ~ this.postService.getPostById ~ response:',
+            response
+          );
           this.post = response.data;
           this.processPost();
 
