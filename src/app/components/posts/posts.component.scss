@@ -2,8 +2,9 @@
   position: relative;
   margin-top: 20px;
   padding: 1rem 0.5rem;
-  a {
-    position:absolute;
+  a,
+  span {
+    position: absolute;
     top: -1.21rem;
     left: 9%;
     text-decoration: none;

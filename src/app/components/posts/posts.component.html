@@ -1,7 +1,13 @@
 <div class="container">
+  @if(isUserLogged) {
   <a routerLink="create">
     <app-small-title title="Create new post" />
   </a>
+  } @else {
+  <span class="container__span">
+    <app-small-title title="You could create posts after register or login" />
+  </span>
+  }
   @defer (on timer(1000)) {
   <div class="container__inside">
     <div class="container__inside__posts">
