@@ -167,7 +167,7 @@ export class DetailsComponent implements OnInit {
     const token = this.authService.getToken();
     const review = {
       body: this.form.value.body,
-      authorId: '272734628828jd83',
+      authorId: userId,
     };
     if (!this.isEditing) {
       // Llamada a la función que guarda la review
@@ -190,13 +190,7 @@ export class DetailsComponent implements OnInit {
       });
     } else {
       this.reviewService
-        .editReview(
-          this.postId,
-          this.reviewIdToEdit,
-          '272734628828jd83',
-          review,
-          token
-        )
+        .editReview(this.postId, this.reviewIdToEdit, userId, review, token)
         .subscribe({
           next: (response) => {
             this.form.reset();
