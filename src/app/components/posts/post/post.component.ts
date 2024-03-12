@@ -30,7 +30,7 @@ import { UserInLocalStorage } from '../../../services/auth/session';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
 })
-export class PostComponent implements OnInit {
+export class PostComponent {
   @Input() post: Post | any;
   public id: string = '';
   public liked: boolean = false;
@@ -51,14 +51,9 @@ export class PostComponent implements OnInit {
     this.userId = this.authService.getUserId();
   }
 
-  ngOnInit(): void {
-    if (this.isLoggedIn) {
-      this.checkIfUserLikedPost();
-    }
-  }
-
   ngOnChanges() {
     this.checkSessionState();
+    this.checkIfUserLikedPost()
   }
 
   checkSessionState() {
