@@ -86,6 +86,7 @@ export class DetailsComponent implements OnInit {
       },
       error: (error) => {
         this.toaster.error('Error verifying authentication', 'Error');
+        this.router.navigate(['hero/login']);
       },
     });
   }
@@ -97,10 +98,6 @@ export class DetailsComponent implements OnInit {
       // Hacer el primer fetch para obtener la información del post
       this.postService.getPostById(this.postId).subscribe({
         next: (response) => {
-          console.log(
-            '🚀 ~ DetailsComponent ~ this.postService.getPostById ~ response:',
-            response
-          );
           this.post = response.data;
           this.processPost();
 
@@ -136,7 +133,6 @@ export class DetailsComponent implements OnInit {
 
   loadReviews() {
     if (!this.postId) return;
-    // if (!this.post?.reviewsIds?.length) return;
     this.reviewService.getReviewsByPostId(this.postId).subscribe((reviews) => {
       this.reviews = reviews.data;
       // Llamada a la función que procesa las reviews (por ejemplo, mostrar un modal)
@@ -146,7 +142,10 @@ export class DetailsComponent implements OnInit {
 
   getReview() {
     if (!this.reviewIdToEdit) return;
-    this.reviewService.getReviewById(this.reviewIdToEdit).subscribe({
+
+    const token = this.authService.getToken();
+
+    this.reviewService.getReviewById(this.reviewIdToEdit, token).subscribe({
       next: (response) => {
         this.review = response.data;
         this.form.patchValue({
@@ -159,55 +158,61 @@ export class DetailsComponent implements OnInit {
     });
   }
 
-  saveReview() {
+  handleReview() {
     if (!this.form.valid) {
       return;
     }
+    // Call methods to get user id and token (if needed)
+    const userId = this.authService.getUserId();
+    const token = this.authService.getToken();
     const review = {
       body: this.form.value.body,
       authorId: '272734628828jd83',
     };
-    // Llamada a la función que guarda la review
-    this.reviewService.createReview(this.postId, review).subscribe({
-      next: (response) => {
-        this.form.reset();
-        // Llamada a la función que carga las reviews
-        this.reviewService
-          .getReviewsByPostId(this.postId)
-          .subscribe((reviews) => (this.reviews = reviews.data));
-        this.toaster.success(response.message, 'Success');
-      },
-      error: (error) => {
-        this.toaster.error('Error creating review', 'Error');
-      },
-    });
-  }
-
-  editReview() {
-    if (!this.form.valid) {
-      return;
-    }
-    const review = {
-      body: this.form.value.body,
-      authorId: '272734628828jd83',
-    };
-    this.reviewService
-      .editReview(this.postId, this.reviewIdToEdit, '272734628828jd83', review)
-      .subscribe({
+    if (!this.isEditing) {
+      // Llamada a la función que guarda la review
+      this.reviewService.createReview(this.postId, review, token).subscribe({
         next: (response) => {
           this.form.reset();
-          this.reviewIdToEdit = '';
-          this.isEditing = false;
-          this.review = {};
+          // Llamada a la función que carga las reviews
           this.reviewService
             .getReviewsByPostId(this.postId)
-            .subscribe((reviews) => (this.reviews = reviews.data));
+            .subscribe((reviews) => {
+              this.reviews = reviews.data;
+            });
           this.toaster.success(response.message, 'Success');
         },
         error: (error) => {
-          this.toaster.error('Error editing review', 'Error');
+          console.log(review);
+
+          this.toaster.error('Error creating review', 'Error');
         },
       });
+    } else {
+      this.reviewService
+        .editReview(
+          this.postId,
+          this.reviewIdToEdit,
+          '272734628828jd83',
+          review,
+          token
+        )
+        .subscribe({
+          next: (response) => {
+            this.form.reset();
+            this.reviewIdToEdit = '';
+            this.isEditing = false;
+            this.review = {};
+            this.reviewService
+              .getReviewsByPostId(this.postId)
+              .subscribe((reviews) => (this.reviews = reviews.data));
+            this.toaster.success(response.message, 'Success');
+          },
+          error: (error) => {
+            this.toaster.error('Error editing review', 'Error');
+          },
+        });
+    }
   }
 
   goBack() {

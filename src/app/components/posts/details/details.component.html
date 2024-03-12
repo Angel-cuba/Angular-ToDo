@@ -4,19 +4,22 @@
   </div>
   <div class="details__reviews">
     <form class="details__reviews__form"
-      (ngSubmit)="!isEditing ? this.saveReview() : this.editReview() " [formGroup]="form">
+      (ngSubmit)="handleReview() " [formGroup]="form">
       <div class="details__reviews__form--input">
         <label class="details__reviews__form--input__label" for="body">Let us know what do you think
           about our post?</label>
         <textarea name="body" id="body" cols="30" rows="10" formControlName="body"
-          [placeholder]="[ isEditing ? review.body : 'Write something here...']"></textarea>
+          [placeholder]="[ isEditing ? review.body : 'Write something here...']" maxlength="200" minlength="3"></textarea>
         @if(isUserLogged) {
         <span class="details__reviews__form--input__error"
           *ngIf="this.form.controls['body'].getError('required') && form.touched">Field
           required!</span>
         <span class="details__reviews__form--input__error"
           *ngIf="form.controls['body'].getError('minlength')">Minimum of 3</span>
-        }
+        <span class="details__reviews__form--input__error"
+          *ngIf="form.controls['body'].getError('maxlength')">Maximum of 200</span>
+        } 
+        <span class="details__reviews__form--body-length">{{form.value.body?.length}}</span>
       </div>
       @if(isUserLogged) {
       @if (isEditing) {
