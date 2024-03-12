@@ -21,33 +21,52 @@ export class ReviewService {
 
   constructor(private http: HttpClient) {}
 
-  getReviewsByPostId(id: string): Observable<ReviewInterfaceResponse> {
+  getReviewsByPostId(postId: string): Observable<ReviewInterfaceResponse> {
     return this.http.get<ReviewInterfaceResponse>(
-      this.url + `reviews/all/${id}`
+      this.url + `reviews/all/${postId}`
     );
   }
 
-  createReview(postId: string, review: Review) {
+
+  createReview(postId: string, review: Review, token: string) {
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    }
     return this.http.post<ReviewResponse>(
-      this.url + `reviews/create/${postId}`,
-      review
+      this.url + `reviews/create/review/${postId}`,
+      review,
+      { headers }
     );
   }
 
-  getReviewById(id: string): Observable<ReviewResponse>  {
-    return this.http.get<ReviewResponse>(this.url + `reviews/review/${id}`);
+  getReviewById(reviewId: string, token: string): Observable<ReviewResponse>  {
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    }
+    return this.http.get<ReviewResponse>(this.url + `reviews/review/${reviewId}`, { headers });
   }
 
-  editReview(postId: string, reviewId: string, userId: string, review: Review): Observable<ReviewResponse> {
+  editReview(postId: string, reviewId: string, userId: string, review: Review, token: string): Observable<ReviewResponse> {
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    }
     return this.http.put<ReviewResponse>(
       this.url + `reviews/${postId}/update/${reviewId}/${userId}`,
-      review
+      review,
+      { headers }
     );
   }
 
-  deleteReview(postId: string, reviewId: string, userId: string): Observable<ReviewResponse>{
+  deleteReview(postId: string, reviewId: string, userId: string, token: string): Observable<ReviewResponse>{
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    }
     return this.http.delete<ReviewResponse>(
-      this.url + `reviews/${postId}/delete/${reviewId}/${userId}`
+      this.url + `reviews/${postId}/delete/${reviewId}/${userId}`, { headers }
     );
   }
 }
