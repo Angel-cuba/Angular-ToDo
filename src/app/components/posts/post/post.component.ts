@@ -142,4 +142,9 @@ export class PostComponent {
       },
     });
   }
+
+  goToDetails(id: string | undefined) {
+  if (id === undefined) return;
+  this.router.navigate(['hero/home/post/' + id]);
+  }
 }
