@@ -1,8 +1,8 @@
 export interface Review {
-  id: string
+  id?: string
   authorId: string;
   body: string;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
 };
 
