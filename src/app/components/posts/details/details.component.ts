@@ -102,7 +102,7 @@ export class DetailsComponent implements OnInit {
           this.processPost();
 
           // Hacer el segundo fetch para obtener las reviews basadas en el ID del post
-          if (this.post?.reviewIds?.length > 0) {
+          if (this.post?.reviewIds?.length) {
             this.loadReviews();
           }
         },
@@ -175,16 +175,19 @@ export class DetailsComponent implements OnInit {
         next: (response) => {
           this.form.reset();
           // Llamada a la función que carga las reviews
-          this.reviewService
-            .getReviewsByPostId(this.postId)
-            .subscribe((reviews) => {
-              this.reviews = reviews.data;
-            });
-          this.toaster.success(response.message, 'Success');
+          // Si no hay reviews, esperar 2 segundos ya que sería el primer review
+          if(this.reviews.length > 0) {
+            this.loadReviews();
+          } else {
+            setTimeout(() => {
+              this.loadReviews();
+            }, 2000);
+          }
+          this.toaster.success(response.message, 'Success', {
+            timeOut: 1500,
+          });
         },
         error: (error) => {
-          console.log(review);
-
           this.toaster.error('Error creating review', 'Error');
         },
       });
@@ -197,9 +200,8 @@ export class DetailsComponent implements OnInit {
             this.reviewIdToEdit = '';
             this.isEditing = false;
             this.review = {};
-            this.reviewService
-              .getReviewsByPostId(this.postId)
-              .subscribe((reviews) => (this.reviews = reviews.data));
+            // Load the reviews
+            this.loadReviews();
             this.toaster.success(response.message, 'Success');
           },
           error: (error) => {

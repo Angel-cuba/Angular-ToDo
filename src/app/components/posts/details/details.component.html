@@ -35,7 +35,7 @@
         review</p>
       }
     </form>
-    @if (post?.reviewIds?.length) {
+    @if (reviews.length) {
     <div class="details__reviews__content">
       @defer (on timer(2000)) {
       <div class="details__reviews__content--reviews">
