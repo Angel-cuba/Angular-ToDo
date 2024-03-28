@@ -3,7 +3,6 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Post, PostByIdResponse, PostResponse } from '../../interfaces/Post';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
 type createPost = {
   title: string;
@@ -18,7 +17,7 @@ type createPost = {
 export class PostService {
   url: string = environment.localUrl;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient) {
     this.loadPosts();
   }
 
@@ -44,7 +43,11 @@ export class PostService {
     });
   }
 
-  likeOrDislikePost(postId: string, userId: string, token: string): Observable<PostResponse> {
+  likeOrDislikePost(
+    postId: string,
+    userId: string,
+    token: string
+  ): Observable<PostResponse> {
     const headers = {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
@@ -74,7 +77,11 @@ export class PostService {
     );
   }
 
-  deletePost(postId: string, userId: string, token: string): Observable<PostResponse> {
+  deletePost(
+    postId: string,
+    userId: string,
+    token: string
+  ): Observable<PostResponse> {
     const headers = {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
