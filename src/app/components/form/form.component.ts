@@ -9,10 +9,15 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../services/posts/post-service.service';
-import { Post } from '../../interfaces/Post';
 import { TagComponent } from '../posts/tag/tag.component';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth/auth.service';
+
+type PostForm = {
+  title: string;
+  body: string;
+  image: string;
+}
 
 @Component({
   selector: 'app-form',
@@ -32,7 +37,7 @@ export class FormComponent {
   public isError: boolean = false;
   public errorMessage: string = '';
   public id: string = '';
-  public postData: Post | any = {};
+  public postData: PostForm = {} as PostForm;
 
   public form: FormGroup = this.formBuilder.group({
     title: [
@@ -80,7 +85,7 @@ export class FormComponent {
     });
   }
   //TODO: Hacer que cada tag no tenga espacios, ni delante, atrás o en el medio
-  processTags(newTags: any) {
+  processTags(newTags: string) {
     this.isError = false;
     this.errorMessage = '';
     if (this.tags.length === 0 && newTags.length === 0) return [];
