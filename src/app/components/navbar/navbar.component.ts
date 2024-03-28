@@ -10,6 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { UserInLocalStorage } from '../../services/auth/session';
 
+interface Route {
+  path?: string;
+  children?: Route[];
+  disabled?: boolean;
+}
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -23,6 +29,7 @@ import { UserInLocalStorage } from '../../services/auth/session';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
+
 export class NavbarComponent implements OnInit {
   public openMenu: boolean = false;
   public isUserLogged: boolean = false;
@@ -37,7 +44,7 @@ export class NavbarComponent implements OnInit {
     private toast: ToastrService
   ) {}
 
-  public navItems: any = routes
+  public navItems: Route[] = routes
     .map((route) => route.children ?? [])
     .flat()
     .filter((route) => route.path !== '')
@@ -52,7 +59,7 @@ export class NavbarComponent implements OnInit {
         this.isUserLogged = isAuthenticated.isLoggedIn;
         this.setUserImage();
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('🚀 ~ NavbarComponent ~ ngOnInit ~ error', err);
       },
     });

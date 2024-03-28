@@ -3,7 +3,7 @@
   <div class="navbar__items">
     @for (item of navItems; track item.path) {
     <a class="navbar__items--item" [routerLink]="[item.path]" [ariaDisabled]="item.disabled">
-      {{ (item.path)?.slice(0, 1)?.toUpperCase() + (item.path)?.slice(1) }}
+      {{ item.path ? item.path[0].toUpperCase() + (item.path).slice(1) : '' }}
     </a>
     }
     <div class="navbar__items--item-profile" (click)="goToProfile()">
@@ -25,7 +25,7 @@
   <div class="navbar__mobile-menu--items">
     @for (item of navItems; track item.path) {
     <a class="navbar__mobile-menu--items--item" [routerLink]="[item.path]" (click)="closeMenu()">
-      {{ (item.path)?.slice(0, 1)?.toUpperCase() + (item.path)?.slice(1) }}
+      {{ item.path ? item.path[0].toUpperCase() + (item.path).slice(1) : '' }}
     </a>
     }
     <button mat-raised-button color="accent" (click)="goToLogin()">
