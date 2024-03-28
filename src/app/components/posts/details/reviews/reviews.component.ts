@@ -44,15 +44,15 @@ export class ReviewsComponent {
     });
   }
 
-  likeReview(reviewId: string) {
+  likeReview(reviewId: string | undefined) {
     console.log(reviewId);
   }
 
-  dislikeReview(reviewId: string) {
+  dislikeReview(reviewId: string | undefined) {
     console.log(reviewId);
   }
 
-  editReview(reviewIdToEdit: string) {
+  editReview(reviewIdToEdit: string | undefined) {
     if (reviewIdToEdit === undefined) return;
 
     if (this.isUserLoggedIn === false) {
@@ -65,7 +65,7 @@ export class ReviewsComponent {
     this.reviewIdToEdit.emit(reviewIdToEdit);
   }
 
-  deleteReview(reviewIdToEdit: string) {
+  deleteReview(reviewIdToEdit: string | undefined) {
     if (reviewIdToEdit === undefined) return;
 
     const token = this.authService.getToken();

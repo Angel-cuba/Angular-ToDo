@@ -8,6 +8,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './tag.component.scss'
 })
 export class TagComponent {
-  @Input() tag!: any;
+  @Input() tag!: string;
   constructor() {}
 }

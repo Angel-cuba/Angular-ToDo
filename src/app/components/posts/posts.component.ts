@@ -44,7 +44,7 @@ export class PostsComponent implements OnInit {
       next: (isAuthenticated: UserInLocalStorage) => {
         this.isUserLogged = isAuthenticated.isLoggedIn;
       },
-      error: (err: any) => {
+      error: (err) => {
         this.isUserLogged = false;
       },
     });
