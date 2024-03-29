@@ -122,7 +122,9 @@ export class SigninComponent {
           this.router.navigate(['/hero/home']);
         },
         error: (error) => {
-          console.log('🚀 ~ NavbarComponent ~ regiterUser ~ error', error);
+          this.toastr.error('Error creating user', 'Error', {
+            timeOut: 1500,
+          });
         },
       });
     }
