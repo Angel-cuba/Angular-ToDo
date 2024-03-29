@@ -61,7 +61,7 @@ export class PostComponent {
       next: (isAuthenticated: UserInLocalStorage) => {
         this.isLoggedIn = isAuthenticated.isLoggedIn;
       },
-      error: (err: any) => {
+      error: (err) => {
         this.isLoggedIn = false;
         this.toaster.error('Maybe you have to login again!', 'Error', {
           timeOut: 1500,
@@ -116,7 +116,8 @@ export class PostComponent {
     if (!this.isLoggedIn) return;
     const listOfUserLikes = this.post.likes;
     const userId = this.authService.getUserId();
-    if (listOfUserLikes?.length > 0 && listOfUserLikes !== undefined) {
+    if (listOfUserLikes?.length && listOfUserLikes !== undefined) {
+      if(!this.post.likes) return;
       const checkUser = this.post.likes.includes(userId);
       if (checkUser) {
         this.liked = true;
