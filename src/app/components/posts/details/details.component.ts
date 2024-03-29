@@ -19,11 +19,6 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserInLocalStorage } from '../../../services/auth/session';
 
-type ReviewResponse = {
-  data: Review;
-  message: string;
-  status: string;
-};
 
 @Component({
   selector: 'app-details',
@@ -42,10 +37,10 @@ type ReviewResponse = {
 export class DetailsComponent implements OnInit {
   //TODO: Cambiar los types any por los tipos correctos
   public postId: string = '';
-  public post: Post | any = {};
+  public post: Post = {} as Post;
   public reviews: Review[] = [];
   public isEditing: boolean = false;
-  public review: ReviewResponse | any = {};
+  public review: Review = {} as Review;
   public subscription: Subscription = new Subscription();
   public isUserLogged: boolean = false;
 
@@ -199,7 +194,7 @@ export class DetailsComponent implements OnInit {
             this.form.reset();
             this.reviewIdToEdit = '';
             this.isEditing = false;
-            this.review = {};
+            this.review = {} as Review;
             // Load the reviews
             this.loadReviews();
             this.toaster.success(response.message, 'Success');
