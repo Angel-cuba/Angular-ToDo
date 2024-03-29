@@ -4,7 +4,7 @@ export interface Post {
   id?: string;
   title: string;
   body: string;
-  authorId: string;
+  authorId?: string;
   image: string;
   likes?: string[];
   tags: string[];
